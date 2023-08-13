@@ -4,7 +4,7 @@ import Home from "./pages/Home/Home";
 import Dashboard from "./pages/Dashboard/Dashboard";
 import Login from "./pages/Login/Login";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
-import { AuthProvider } from "./context/AuthContex.tsx";
+import NavBar from "./components/NavBar/NavBar.tsx";
 
 function App() {
   const AppRouter = () => {
@@ -33,9 +33,8 @@ function App() {
   };
   return (
     <>
-      <AuthProvider>
-        <AppRouter />
-      </AuthProvider>
+      <NavBar />
+      <AppRouter />
     </>
   );
 }

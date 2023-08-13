@@ -5,7 +5,11 @@ type Props = {
 };
 
 const Layout = ({ children }: Props) => {
-  return <div className="max-w-screen-lg mx-auto">{children}</div>;
+  return (
+    <div className="max-w-screen-lg min-h-[calc(100vh_-_64px)] mx-auto ">
+      {children}
+    </div>
+  );
 };
 
 export default Layout;
