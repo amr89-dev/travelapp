@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Layout from "../Layout/Layout";
+import { createUser } from "../../redux/user.slice";
+import { useAppDispatch } from "../../hooks/reduxHooks";
 
 type User = {
   name: string;
@@ -9,6 +11,7 @@ type User = {
 };
 
 const SignUp = () => {
+  const dispatch = useAppDispatch();
   const [formData, setFormData] = useState<User>({
     name: "",
     lastName: "",
@@ -16,19 +19,18 @@ const SignUp = () => {
     password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("hola");
-  };
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
     });
   };
-  console.log(formData);
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    dispatch(createUser(formData));
+  };
   const formStyles = {
     input:
       "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
