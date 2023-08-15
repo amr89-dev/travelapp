@@ -1,19 +1,23 @@
 const User = require("../models/User");
+const { randomUUID } = require("crypto");
 
 async function postUser(req, res) {
   try {
-    const { name, lastName, email, password } = req.body;
-    console.log({ name, lastName, email, password });
+    const { name, username, email, password } = req.body;
 
-    if (!name || !lastName || !email || !password) {
+    if (!name || !username || !email || !password) {
       res
         .status(401)
-        .json({ error: "Faltan datos name, lastName, email, password" });
+        .json({ error: "Faltan datos name, username, email, password" });
     }
+    const usernameMatch = await User.findOne({ where: { username } });
 
+    if (usernameMatch) {
+      return res.status(401).json({ message: "Nombre de usuario ya existe" });
+    }
     let newUser = await User.create({
-      id: 1,
-      username: lastName,
+      id: randomUUID(),
+      username,
       password,
       name,
     });

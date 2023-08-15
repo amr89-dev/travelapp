@@ -1,7 +1,9 @@
+const { login } = require("../controllers/loginController");
+
 const loginRoutes = require("express").Router();
 
-loginRoutes.get("/", (req, res) => {
-  res.send("Estoy en la ruta de login");
+loginRoutes.post("/", (req, res) => {
+  login(req, res);
 });
 
 module.exports = loginRoutes;
