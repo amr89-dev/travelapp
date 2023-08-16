@@ -19,6 +19,14 @@ const Hotel = database.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    city: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    country: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     available: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
@@ -36,8 +44,9 @@ Hotel.hasMany(Room, {
   foreignKey: "hotelId",
   sourceKey: "idHotel",
 });
-Room.hasMany(Hotel, {
-  foreignKey: "roomsId",
-  targetId: "idRoom",
+
+Room.belongsTo(Hotel, {
+  foreignKey: "hotelId",
+  targetKey: "idHotel",
 });
 module.exports = Hotel;

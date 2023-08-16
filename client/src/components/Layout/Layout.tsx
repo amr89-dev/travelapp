@@ -1,10 +1,6 @@
 import React from "react";
-
-type Props = {
-  children: React.ReactNode;
-};
-
-const Layout = ({ children }: Props) => {
+import { type childrenProps } from "../../types/types";
+const Layout = ({ children }: childrenProps) => {
   return (
     <div className="max-w-screen-lg min-h-[calc(100vh_-_64px)] mx-auto ">
       {children}

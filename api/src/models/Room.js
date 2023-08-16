@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { database } = require("../DB");
 const Hotel = require("./Hotel");
+const Reservation = require("./Reservation");
 
 const Room = database.define(
   "rooms",
@@ -26,16 +27,20 @@ const Room = database.define(
       type: DataTypes.BOOLEAN,
       defaultValue: true,
     },
-    reservedFrom: {
-      type: DataTypes.DATE,
-    },
-    reservedUntil: {
-      type: DataTypes.DATE,
-    },
   },
   {
     timestamps: false,
   }
 );
+
+Room.hasMany(Reservation, {
+  foreignKey: "roomId",
+  sourceKey: "idRoom",
+});
+
+Reservation.belongsTo(Room, {
+  foreignKey: "roomId",
+  targetKey: "idRoom",
+});
 
 module.exports = Room;

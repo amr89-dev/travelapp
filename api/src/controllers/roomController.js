@@ -1,24 +1,14 @@
-// controllers/roomController.js
-
+const { Sequelize } = require("sequelize");
 const Hotel = require("../models/Hotel");
+const Reservation = require("../models/Reservation");
 const Room = require("../models/Room");
 
 async function createRooms(req, res) {
   try {
-    const {
-      idHotel,
-      numRooms,
-      roomType,
-      roomPrice,
-      roomLocation,
-      available,
-      reservedFrom,
-      reservedUntil,
-    } = req.body;
+    const { idHotel, numRooms, roomType, roomPrice, roomLocation, available } =
+      req.body;
 
     const hotel = await Hotel.findByPk(idHotel);
-
-    console.log("encontre el hotel", hotel);
 
     if (!hotel) {
       return res.status(404).json({ message: "Hotel no encontrado" });
@@ -32,13 +22,12 @@ async function createRooms(req, res) {
         roomPrice,
         roomLocation,
         available,
-        reservedFrom: new Date(reservedFrom),
-        reservedUntil: new Date(reservedUntil),
         hotelId: idHotel,
       });
     }
     const roomsCreated = await Room.bulkCreate(roomsToCreate);
-    hotel.addRoom(roomsCreated);
+    await hotel.addRooms(roomsCreated);
+    await hotel.reload();
 
     res.status(200).json({ habitacionesCreadas: roomsCreated });
   } catch (error) {
@@ -46,5 +35,60 @@ async function createRooms(req, res) {
     res.status(200).json({ message: "Error interno del servidor" });
   }
 }
+async function getRooms(req, res) {
+  try {
+    const roomsWithReservation = await Room.findAll({
+      include: [
+        {
+          model: Reservation,
+        },
+      ],
+    });
 
-module.exports = { createRooms };
+    return res.status(200).json(roomsWithReservation);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+}
+
+async function updateRooms(req, res) {
+  try {
+    const { id } = req.params;
+    const { roomPrice, roomType } = req.body;
+
+    const roomToUpdate = await Room.findByPk(id);
+
+    if (!roomToUpdate) {
+      return res.status(404).json({ message: "Habitación no encontrada" });
+    }
+
+    roomToUpdate.roomPrice = roomPrice;
+    roomToUpdate.roomType = roomType;
+
+    await roomToUpdate.save();
+
+    res.status(200).json(roomToUpdate);
+  } catch (error) {
+    console.error("Error al actualizar el hotel:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+}
+async function deleteRooms(req, res) {
+  const { id } = req.params;
+
+  try {
+    const roomToDelete = await Room.findByPk(id);
+
+    if (!roomToDelete) {
+      return res.status(404).json({ message: "Habitación  no encontrado" });
+    }
+
+    await roomToDelete.destroy();
+    res.status(204).json({ message: "Habitación eliminada correctamente" });
+  } catch (error) {
+    console.error("Error al eliminar el hotel:", error);
+    res.status(500).json({ message: "Error interno del servidor" });
+  }
+}
+module.exports = { createRooms, getRooms, updateRooms, deleteRooms };

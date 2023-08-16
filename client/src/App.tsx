@@ -1,7 +1,7 @@
 import "./App.css";
 import { useRoutes } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Dashboard from "./pages/Dashboard/Dashboard";
+import Dashboard from "./pages/Dashboard/Dashboard.tsx";
 import Login from "./pages/Login/Login";
 import ProtectedRoutes from "./utils/ProtectedRoutes";
 import NavBar from "./components/NavBar/NavBar.tsx";

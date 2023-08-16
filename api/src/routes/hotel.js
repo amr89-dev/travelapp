@@ -2,10 +2,14 @@ const {
   createHotel,
   updateHotel,
   deleteHotel,
+  getHotels,
 } = require("../controllers/hotelController");
 
 const hotelRoutes = require("express").Router();
 
+hotelRoutes.get("/", (req, res) => {
+  getHotels(req, res);
+});
 hotelRoutes.post("/", (req, res) => {
   createHotel(req, res);
 });

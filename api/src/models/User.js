@@ -1,32 +1,50 @@
-const bcrypt = require("bcrypt");
 const { DataTypes } = require("sequelize");
 const { database } = require("../DB");
+const Reservation = require("./Reservation");
 
 const User = database.define(
   "users",
   {
     id: {
-      type: DataTypes.STRING,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
     },
-    username: {
+    email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
     },
     password: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    role: {
-      type: DataTypes.ENUM("user", "admin"),
-      defaultValue: "user",
-      allowNull: false,
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    birthdate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    gender: {
+      type: DataTypes.ENUM("masculine", "feminine", "neuter"),
+    },
+    documentType: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    documentNumber: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    phone: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    role: {
+      type: DataTypes.ENUM("admin", "traveler"),
+      defaultValue: "traveler",
     },
   },
   {
@@ -34,14 +52,13 @@ const User = database.define(
   }
 );
 
-User.beforeCreate(async (user) => {
-  try {
-    const hashedPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashedPassword;
-  } catch (error) {
-    console.error("Error al cifrar la contraseña:", error);
-    throw new Error("No se pudo cifrar la contraseña");
-  }
+User.hasMany(Reservation, {
+  foreignKey: "userId",
+  sourceKey: "id",
 });
 
+Reservation.belongsTo(User, {
+  foreignKey: "userId",
+  targetKey: "id",
+});
 module.exports = User;

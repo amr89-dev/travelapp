@@ -1,25 +1,60 @@
 const User = require("../models/User");
-const { randomUUID } = require("crypto");
+const { Sequelize } = require("sequelize");
 
-async function postUser(req, res) {
+async function getUsers(req, res) {
   try {
-    const { name, username, email, password } = req.body;
+    const allUsers = await User.findAll();
 
-    if (!name || !username || !email || !password) {
+    return res.status(200).json(allUsers);
+  } catch (error) {
+    console.log(error);
+  }
+}
+async function createUser(req, res) {
+  try {
+    const {
+      name,
+      email,
+      password,
+      birthdate,
+      gender,
+      documentType,
+      documentNumber,
+      phone,
+    } = req.body;
+
+    if (
+      !name ||
+      !email ||
+      !password ||
+      !birthdate ||
+      !gender ||
+      !documentType ||
+      !documentNumber ||
+      !phone
+    ) {
       res
         .status(401)
         .json({ error: "Faltan datos name, username, email, password" });
     }
-    const usernameMatch = await User.findOne({ where: { username } });
+    const usernameMatch = await User.findOne({
+      where: {
+        [Sequelize.Op.and]: [{ documentNumber, email }],
+      },
+    });
 
     if (usernameMatch) {
-      return res.status(401).json({ message: "Nombre de usuario ya existe" });
+      return res.status(401).json({ message: "El usuario ya esta registrado" });
     }
     let newUser = await User.create({
-      id: randomUUID(),
-      username,
-      password,
       name,
+      email,
+      password,
+      birthdate,
+      gender,
+      documentType,
+      documentNumber,
+      phone,
     });
 
     res.status(200).json({
@@ -31,4 +66,26 @@ async function postUser(req, res) {
   }
 }
 
-module.exports = { postUser };
+async function updateUser(req, res) {
+  try {
+    const { id } = req.params;
+    const { password, role } = req.body;
+
+    const userToUpdate = await User.findByPk(id);
+
+    if (!userToUpdate) {
+      return res.status(404).json({ message: "Usuario no encontrada" });
+    }
+
+    userToUpdate.password = password ?? userToUpdate.password;
+    userToUpdate.role = role ?? userToUpdate.password;
+
+    await userToUpdate.save();
+
+    res.status(200).json(userToUpdate);
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+module.exports = { createUser, getUsers, updateUser };

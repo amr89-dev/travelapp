@@ -1,12 +1,28 @@
 const Hotel = require("../models/Hotel");
-const { randomUUID } = require("crypto");
-const { createRooms } = require("./roomController");
+const Room = require("../models/Room");
+
+async function getHotels(req, res) {
+  try {
+    const hotelsWithRooms = await Hotel.findAll({
+      include: [
+        {
+          model: Room,
+          as: "rooms",
+        },
+      ],
+    });
+
+    return res.status(200).json(hotelsWithRooms);
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Error interno del servidor" });
+  }
+}
 
 async function createHotel(req, res) {
   try {
-    const { name, address, numRooms } = req.body;
-    console.log({ name, address });
-    if (!name || !address) {
+    const { name, address, city, country, description } = req.body;
+    if (!name || !address || !city || !country) {
       res.status(401).json({ error: "Faltan datos name, address" });
     }
     const hotelMatch = await Hotel.findOne({ where: { name, address } });
@@ -20,6 +36,9 @@ async function createHotel(req, res) {
     const newHotel = await Hotel.create({
       name,
       address,
+      city,
+      country,
+      description,
     });
 
     res.status(200).json({
@@ -65,10 +84,10 @@ async function deleteHotel(req, res) {
     }
 
     await hotelToDelete.destroy();
-    res.status(204).send();
+    res.status(204).json({ message: "Hotel eliminado correctamente" });
   } catch (error) {
     console.error("Error al eliminar el hotel:", error);
     res.status(500).json({ message: "Error interno del servidor" });
   }
 }
-module.exports = { createHotel, updateHotel, deleteHotel };
+module.exports = { createHotel, updateHotel, deleteHotel, getHotels };
