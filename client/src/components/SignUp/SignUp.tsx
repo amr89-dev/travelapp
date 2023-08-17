@@ -1,25 +1,29 @@
 import { useState } from "react";
 import Layout from "../Layout/Layout";
 import { createUser } from "../../redux/user.slice";
-import { useAppDispatch } from "../../hooks/reduxHooks";
-
-type User = {
-  name: string;
-  lastName: string;
-  email: string;
-  password: string;
-};
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { User, UserGender } from "../../types/types";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
+  const userState = useAppSelector((state) => state.userReducer);
+  console.log(userState.error, userState.user);
+
   const [formData, setFormData] = useState<User>({
+    email: "",
     name: "",
     lastName: "",
-    email: "",
     password: "",
+    birthdate: "",
+    gender: UserGender.NEUTER,
+    documentType: "",
+    documentNumber: "",
+    phone: "",
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
@@ -28,7 +32,6 @@ const SignUp = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
     dispatch(createUser(formData));
   };
   const formStyles = {
@@ -38,16 +41,17 @@ const SignUp = () => {
     button:
       "bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
   };
+
   return (
     <Layout>
       <form
-        className=" flex flex-col items-center justify-center "
+        className=" flex flex-col items-center justify-center"
         onSubmit={handleSubmit}
       >
         <h2 className="font-bold text-gray-700  text-2xl m-4 ">
           Hazte una cuenta
         </h2>
-        <div className=" shadow-2xl rounded-lg w-[90%] sm:w-1/2 flex flex-col p-4 gap-3">
+        <div className=" shadow-2xl rounded-lg   sm:w-1/2 flex flex-col p-4 gap-3">
           <div>
             <label htmlFor="name" className={formStyles.label}>
               Nombre:
@@ -61,8 +65,7 @@ const SignUp = () => {
               value={formData.name}
               placeholder="Ingrese su nombre"
             />
-          </div>
-          <div>
+
             <label htmlFor="last-name" className={formStyles.label}>
               Apellido:
             </label>
@@ -102,6 +105,90 @@ const SignUp = () => {
               onChange={handleChange}
               value={formData.password}
               placeholder="Ingrese una constraseña"
+            />
+          </div>
+          <div>
+            <label htmlFor="phone" className={formStyles.label}>
+              Telefono:
+            </label>
+            <input
+              type="tel"
+              name="phone"
+              className={formStyles.input}
+              id="phone"
+              onChange={handleChange}
+              value={formData.phone}
+              placeholder="Ingrese su numero de telefono"
+            />
+          </div>
+          <div>
+            <label htmlFor="birthdate" className={formStyles.label}>
+              Fecha de nacimiento:
+            </label>
+            <input
+              type="date"
+              name="birthdate"
+              id="birthdate"
+              onChange={handleChange}
+              value={formData.birthdate}
+              placeholder="Ingrese su fecha de nacimiento"
+            />
+          </div>
+          <div>
+            <label htmlFor="gender" className={formStyles.label}>
+              Sexo:
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                value={UserGender.FEMININE}
+                onChange={handleChange}
+                placeholder="Ingrese su fecha de nacimiento"
+              />
+              Femenino
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                value={UserGender.MASCULINE}
+                onChange={handleChange}
+                placeholder="Ingrese su fecha de nacimiento"
+              />
+              Masculino
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="gender"
+                value={UserGender.NEUTER}
+                onChange={handleChange}
+                placeholder="Ingrese su fecha de nacimiento"
+              />
+              Neutro
+            </label>
+          </div>
+          <div>
+            <select
+              name="documentType"
+              id="documentType"
+              onChange={handleChange}
+              value={formData.documentNumber}
+            >
+              <option value="passport">Pasaporte</option>
+              <option value="cedulaCiudadania">Cedula de ciudadania</option>
+              <option value="cedulaExtranjeria">Cedulad de extranjeria</option>
+              <option value="otro">Otro</option>
+            </select>
+
+            <input
+              type="text"
+              name="documentNumber"
+              id="documentNumber"
+              onChange={handleChange}
+              value={formData.documentNumber}
+              placeholder="Ingrese su numero de documento"
             />
           </div>
           <button className={formStyles.button} type="submit">

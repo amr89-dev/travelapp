@@ -1,23 +1,19 @@
-import axios from "axios";
-import { createSlice } from "@reduxjs/toolkit";
-import { User } from "./action-types";
+import axios, { AxiosError } from "axios";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { User, UserGender, UserInitialState } from "../types/types";
 import { AppThunk } from "./store";
-const endpoint = "http://localhost:3001/user";
 
-interface UserState {
+const initialState: UserInitialState = {
   user: {
-    id: number;
-    name: string;
-    email: string;
-  };
-  error: string | null;
-}
-
-const initialState: UserState = {
-  user: {
-    id: 0,
-    name: "",
     email: "",
+    name: "",
+    lastName: "",
+    password: "",
+    birthdate: "",
+    gender: UserGender.NEUTER,
+    documentType: "",
+    documentNumber: "",
+    phone: "",
   },
   error: null,
 };
@@ -31,10 +27,18 @@ const userSlice = createSlice({
         ...state,
       };
     },
-    addUser(state, action) {
+    addUser(state, action: PayloadAction<User>) {
       return {
         ...state,
         user: action.payload,
+        error: null,
+      };
+    },
+    setError(state, action) {
+      return {
+        ...state,
+
+        error: action.payload,
       };
     },
   },
@@ -42,15 +46,17 @@ const userSlice = createSlice({
 export const createUser = (userData: User): AppThunk => {
   return async (dispatch) => {
     try {
-      const userToCreate = await axios.post(endpoint, userData);
+      const userToCreate = await axios.post("/user", userData);
       const userCreated = await userToCreate.data;
       dispatch(addUser(userCreated));
-    } catch (err) {
-      console.log(err);
+    } catch (error) {
+      const axiosError = error as AxiosError; // Convertir el error a AxiosError
+
+      dispatch(setError(axiosError.response?.data));
     }
   };
 };
 
-export const { getUser, addUser } = userSlice.actions;
+export const { getUser, addUser, setError } = userSlice.actions;
 
 export default userSlice.reducer;

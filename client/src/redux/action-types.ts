@@ -1,3 +1,5 @@
+import { Hotel, User } from "../types/types";
+
 //AUTH
 export enum AuthActionTypes {
   GET_AUTH = "GET_AUTH",
@@ -15,11 +17,21 @@ export enum UserActionTypes {
   DELETE_USER = "DELETE_USER",
   GET_USER = "GET_USER",
 }
-export type User = {
-  name: string;
-  email: string;
-};
+
 export type UserAction = {
   type: UserActionTypes;
   payload: User;
 };
+
+//HOTEL
+export enum HotelActionTypes {
+  GET_HOTEL = "GET_HOTEL",
+  CREATE_HOTEL = "CREATE_HOTEL",
+}
+
+export type HotelAction = {
+  type: HotelActionTypes;
+  payload: Hotel;
+};
+
+//ROOM

@@ -14,6 +14,7 @@ async function createUser(req, res) {
   try {
     const {
       name,
+      lastName,
       email,
       password,
       birthdate,
@@ -25,6 +26,7 @@ async function createUser(req, res) {
 
     if (
       !name ||
+      !lastName ||
       !email ||
       !password ||
       !birthdate ||
@@ -33,8 +35,8 @@ async function createUser(req, res) {
       !documentNumber ||
       !phone
     ) {
-      res
-        .status(401)
+      return res
+        .status(400)
         .json({ error: "Faltan datos name, username, email, password" });
     }
     const usernameMatch = await User.findOne({
@@ -44,7 +46,7 @@ async function createUser(req, res) {
     });
 
     if (usernameMatch) {
-      return res.status(401).json({ message: "El usuario ya esta registrado" });
+      return res.status(400).json({ message: "El usuario ya esta registrado" });
     }
     let newUser = await User.create({
       name,

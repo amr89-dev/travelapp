@@ -1,22 +1,26 @@
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 const NavBar = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(true);
+  const location = useLocation().pathname.slice(1);
 
-  const links = [
+  const isAuth = useAuth();
+
+  /*   const links = [
     { to: "/", name: "Home" },
     { to: "/login", name: "Login" },
-  ];
+  ]; */
 
   const toggleMenu = () => {
     setMenuIsOpen(!menuIsOpen);
   };
 
-  const navStyles = {
+  /*  const navStyles = {
     isActive: "mx-2 font-bold ",
     pending: "mx-2",
-  };
+  }; */
 
   return (
     <div className="bg-blue-700  text-white min-w-screen-lg shadow-xl ">
@@ -61,7 +65,7 @@ const NavBar = () => {
         <Link to="/">
           <div className=" font-bold text-3xl">TravelApp</div>
         </Link>
-        <ul
+        {/* <ul
           className={`${
             menuIsOpen
               ? "hidden"
@@ -79,21 +83,25 @@ const NavBar = () => {
               {el.name}
             </NavLink>
           ))}
-        </ul>
+        </ul> */}
         <ul className="flex flex-row gap-1 items-center">
-          <li>
-            <button className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-3 border border-white hover:border-transparent rounded">
-              Registrate
-            </button>
-          </li>
+          {location !== "signup" && (
+            <Link to="signup">
+              <button className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-3 border border-white hover:border-transparent rounded">
+                Registrate
+              </button>
+            </Link>
+          )}
           <li>
             <button className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-3 border border-white hover:border-transparent rounded">
               Inicia Sesión
             </button>
           </li>
-          <li>
-            <Link to="/dashboard">👤</Link>
-          </li>
+          {isAuth && (
+            <li>
+              <Link to="/dashboard">👤</Link>
+            </li>
+          )}
         </ul>
       </nav>
     </div>

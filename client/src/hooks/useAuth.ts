@@ -1,6 +1,8 @@
-import { useSelector } from "react-redux";
+import { useAppSelector } from "./reduxHooks";
 
 export const useAuth = () => {
-  const isAuth = useSelector(({ authReducer }) => authReducer.isAuthenticated);
+  const isAuth = useAppSelector(
+    ({ authReducer }) => authReducer.isAuthenticated
+  );
   return isAuth;
 };
