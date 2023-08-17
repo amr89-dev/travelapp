@@ -1,13 +1,11 @@
 import { useState } from "react";
 import Layout from "../Layout/Layout";
 import { createUser } from "../../redux/user.slice";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { useAppDispatch } from "../../hooks/reduxHooks";
 import { User, UserGender } from "../../types/types";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
-  const userState = useAppSelector((state) => state.userReducer);
-  console.log(userState.error, userState.user);
 
   const [formData, setFormData] = useState<User>({
     email: "",

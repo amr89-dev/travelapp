@@ -23,9 +23,9 @@ const NavBar = () => {
   }; */
 
   return (
-    <div className="bg-blue-700  text-white min-w-screen-lg shadow-xl ">
+    <div className="bg-blue-700  text-white min-w-screen-lg shadow-lg ">
       <nav
-        className={` max-w-screen-lg flex flex-row items-center mx-auto p-2 justify-between h-16 `}
+        className={` max-w-screen-xl flex flex-row items-center mx-auto p-2 justify-between h-16 `}
       >
         {!menuIsOpen ? (
           <button className="md:hidden" onClick={toggleMenu}>

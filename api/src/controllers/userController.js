@@ -50,6 +50,7 @@ async function createUser(req, res) {
     }
     let newUser = await User.create({
       name,
+      lastName,
       email,
       password,
       birthdate,

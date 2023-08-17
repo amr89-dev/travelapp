@@ -1,13 +1,16 @@
-import HotelDashboardCard from "../../components/HotelDashboardCard/HotelDashboardCard";
-import Layout from "../../components/Layout/Layout";
+import HotelSectionHeader from "../../components/HotelSectionHeader/HotelSectionHeader";
+import HotelSectionCards from "../../components/HotelsSectionCards/HotelSectionCards";
+import SideBar from "../../components/SideBar/SideBar";
 
 const Dashboard = () => {
   return (
-    <Layout>
-      <div className="h-[calc(100vh_-_64px)] grid gap-4 grid-cols-1 md:grid-cols-2	 p-8">
-        <HotelDashboardCard />
+    <div className="h-[calc(100vh_-_64px)] flex flex-row">
+      <SideBar />
+      <div className="w-full flex flex-col">
+        <HotelSectionHeader />
+        <HotelSectionCards />
       </div>
-    </Layout>
+    </div>
   );
 };
 

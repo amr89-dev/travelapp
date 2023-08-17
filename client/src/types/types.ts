@@ -30,19 +30,23 @@ export interface UserInitialState {
 
 //HOTEL
 export type Hotel = {
-  idHotel: string;
+  idHotel?: string;
   name: string;
   address: string;
   city: string;
   country: string;
-  available: true;
-  description: string;
-  rooms: Room[];
+  available?: boolean;
+  description?: string;
+  rooms?: Room[];
 };
 
 export interface HotelInitialState {
   hotels: Hotel[];
   error: string | null;
+}
+
+export interface HotelCardProps {
+  hotelData: Hotel;
 }
 //ROOM
 export type Room = {

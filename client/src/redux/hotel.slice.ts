@@ -8,7 +8,7 @@ const initialState: HotelInitialState = {
   error: null,
 };
 
-const userSlice = createSlice({
+const hotelSlice = createSlice({
   name: "hotel",
   initialState,
   reducers: {
@@ -55,7 +55,21 @@ export const createHotel = (hotelData: Hotel): AppThunk => {
     try {
       const hotelToCreate = await axios.post("/hotel", hotelData);
       const hotelCreated = await hotelToCreate.data;
+      console.log(hotelCreated);
       dispatch(addHotel(hotelCreated));
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      console.log(axiosError);
+      dispatch(setErrorHotel(axiosError));
+    }
+  };
+};
+export const gethotels = (): AppThunk => {
+  return async (dispatch) => {
+    try {
+      const hotelResponse = await axios.get("/hotel");
+      const hotels = await hotelResponse.data;
+      dispatch(getHotels(hotels));
     } catch (err) {
       const axiosError = err as AxiosError;
       console.log(axiosError);
@@ -71,6 +85,6 @@ export const {
   updateHotel,
   deleteHotel,
   setErrorHotel,
-} = userSlice.actions;
+} = hotelSlice.actions;
 
-export default userSlice.reducer;
+export default hotelSlice.reducer;
