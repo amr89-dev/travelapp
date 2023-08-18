@@ -1,18 +1,23 @@
 import { useState } from "react";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { Hotel } from "../../types/types";
 import { createHotel } from "../../redux/hotel.slice";
 
 const HotelForm = () => {
   const dispatch = useAppDispatch();
+  const hotelState = useAppSelector((state) => state.hotelReducer);
+  const { error, isLoading } = hotelState;
+  console.log(error, isLoading);
 
-  const [formData, setFormData] = useState<Hotel>({
-    name: "",
+  const initialState = {
+    name: "hola",
     address: "",
     city: "",
     country: "",
     description: "",
-  });
+  };
+
+  const [formData, setFormData] = useState<Hotel>(initialState);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -26,7 +31,9 @@ const HotelForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(createHotel(formData));
+    setFormData(initialState);
   };
+
   const formStyles = {
     input:
       "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
@@ -36,6 +43,7 @@ const HotelForm = () => {
     textArea:
       "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline resize-none ",
   };
+  console.log(formData);
 
   return (
     <article>

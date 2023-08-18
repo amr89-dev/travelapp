@@ -50,7 +50,7 @@ export const createUser = (userData: User): AppThunk => {
       const userCreated = await userToCreate.data;
       dispatch(addUser(userCreated));
     } catch (error) {
-      const axiosError = error as AxiosError; // Convertir el error a AxiosError
+      const axiosError = error as AxiosError;
 
       dispatch(setError(axiosError.response?.data));
     }

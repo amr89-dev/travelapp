@@ -6,6 +6,7 @@ import { Hotel, HotelInitialState } from "../types/types";
 const initialState: HotelInitialState = {
   hotels: [],
   error: null,
+  isLoading: false,
 };
 
 const hotelSlice = createSlice({
@@ -27,19 +28,19 @@ const hotelSlice = createSlice({
     addHotel(state, action) {
       return {
         ...state,
-        user: action.payload, // agrega un hotel  que ya gesionamos con el thunk
+        hotels: [...state.hotels, action.payload],
       };
     },
     updateHotel(state, action) {
       return {
         ...state,
-        user: action.payload, // actualiza un hotel
+        hotels: action.payload, // actualiza un hotel
       };
     },
     deleteHotel(state, action) {
       return {
         ...state,
-        user: action.payload, // elimina un hotel
+        hotels: action.payload, // elimina un hotel
       };
     },
     setErrorHotel(state, action) {
@@ -48,15 +49,22 @@ const hotelSlice = createSlice({
         error: action.payload,
       };
     },
+    setIsLoading(state, action) {
+      return {
+        ...state,
+        isLoading: action.payload,
+      };
+    },
   },
 });
 export const createHotel = (hotelData: Hotel): AppThunk => {
   return async (dispatch) => {
     try {
+      dispatch(setIsLoading(true));
       const hotelToCreate = await axios.post("/hotel", hotelData);
       const hotelCreated = await hotelToCreate.data;
-      console.log(hotelCreated);
       dispatch(addHotel(hotelCreated));
+      dispatch(setIsLoading(false));
     } catch (err) {
       const axiosError = err as AxiosError;
       console.log(axiosError);
@@ -70,10 +78,10 @@ export const gethotels = (): AppThunk => {
       const hotelResponse = await axios.get("/hotel");
       const hotels = await hotelResponse.data;
       dispatch(getHotels(hotels));
-    } catch (err) {
-      const axiosError = err as AxiosError;
-      console.log(axiosError);
-      dispatch(setErrorHotel(axiosError));
+    } catch (error) {
+      const axiosError = error as AxiosError;
+
+      dispatch(setErrorHotel(axiosError.response?.data));
     }
   };
 };
@@ -85,6 +93,7 @@ export const {
   updateHotel,
   deleteHotel,
   setErrorHotel,
+  setIsLoading,
 } = hotelSlice.actions;
 
 export default hotelSlice.reducer;

@@ -53,7 +53,7 @@ async function createHotel(req, res) {
 async function updateHotel(req, res) {
   try {
     const { id } = req.params;
-    const { name, address } = req.body;
+    const { name, address, city, country, description } = req.body;
 
     const hotelToUpdate = await Hotel.findByPk(id);
 
@@ -61,8 +61,11 @@ async function updateHotel(req, res) {
       return res.status(404).json({ message: "Hotel no encontrado" });
     }
 
-    hotelToUpdate.name = name;
-    hotelToUpdate.address = address;
+    hotelToUpdate.name = name ?? hotelToUpdate.name;
+    hotelToUpdate.address = address ?? hotelToUpdate.address;
+    hotelToUpdate.city = city ?? hotelToUpdate.city;
+    hotelToUpdate.country = country ?? hotelToUpdate.country;
+    hotelToUpdate.description = description ?? hotelToUpdate.description;
 
     await hotelToUpdate.save();
 

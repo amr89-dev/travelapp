@@ -9,6 +9,7 @@ import NavBar from "./components/NavBar/NavBar.tsx";
 import { gethotels } from "./redux/hotel.slice.ts";
 import { useAppDispatch } from "./hooks/reduxHooks.ts";
 import HotelForm from "./components/HotelForm/HotelForm.tsx";
+import HotelDetail from "./components/HotelDetail/HotelDetail.tsx";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -32,8 +33,12 @@ function App() {
             element: <Dashboard />,
           },
           {
-            path: "create-hotel",
+            path: "/create-hotel",
             element: <HotelForm />,
+          },
+          {
+            path: "/hotel/:idHotel",
+            element: <HotelDetail />,
           },
         ],
       },

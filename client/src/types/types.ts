@@ -43,6 +43,7 @@ export type Hotel = {
 export interface HotelInitialState {
   hotels: Hotel[];
   error: string | null;
+  isLoading: boolean;
 }
 
 export interface HotelCardProps {
