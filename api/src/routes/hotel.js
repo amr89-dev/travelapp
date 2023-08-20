@@ -13,6 +13,9 @@ hotelRoutes.get("/", (req, res) => {
 hotelRoutes.post("/", (req, res) => {
   createHotel(req, res);
 });
+hotelRoutes.get("/:id", (req, res) => {
+  getHotelDetail(req, res);
+});
 hotelRoutes.put("/:id", (req, res) => {
   updateHotel(req, res);
 });

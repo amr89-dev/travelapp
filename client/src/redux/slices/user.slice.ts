@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { User, UserGender, UserInitialState } from "../types/types";
-import { AppThunk } from "./store";
+import { User, UserGender, UserInitialState } from "../../types/types";
+import { AppThunk } from "../store";
 
 const initialState: UserInitialState = {
   user: {

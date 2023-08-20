@@ -1,0 +1,93 @@
+import { createSlice } from "@reduxjs/toolkit";
+import { Room, RoomInitialState } from "../../types/types";
+import { AppThunk } from "../store";
+import axios, { AxiosError } from "axios";
+
+const initialState: RoomInitialState = {
+  rooms: [],
+  error: null,
+  isLoading: false,
+};
+
+const roomSlice = createSlice({
+  name: "room",
+  initialState,
+  reducers: {
+    setRooms(state, action) {
+      return {
+        ...state,
+        rooms: action.payload,
+      };
+    },
+    addRooms(state, action) {
+      return {
+        ...state,
+        rooms: [...state.rooms, action.payload],
+      };
+    },
+    setIsLoading(state, action) {
+      return {
+        ...state,
+        isLoading: action.payload,
+      };
+    },
+    setErrorRoom(state, action) {
+      return {
+        ...state,
+        error: action.payload,
+      };
+    },
+  },
+});
+
+export const getRooms = (): AppThunk => {
+  return async (dispatch) => {
+    try {
+      const roomsResonse = await axios.get("/room");
+      const rooms = await roomsResonse.data;
+      dispatch(setRooms(rooms));
+    } catch (error) {
+      const axiosError = error as AxiosError;
+
+      dispatch(setErrorRoom(axiosError.response?.data));
+    }
+  };
+};
+export const createRoom = (roomData: Room): AppThunk => {
+  return async (dispatch) => {
+    try {
+      dispatch(setIsLoading(true));
+      const hotelToCreate = await axios.post("/room", roomData);
+      const hotelCreated = await hotelToCreate.data;
+      dispatch(addRooms(hotelCreated));
+      dispatch(setIsLoading(false));
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      console.log(axiosError);
+      dispatch(setErrorRoom(axiosError));
+    }
+  };
+};
+export const updateRoom = (roomData: Room): AppThunk => {
+  return async (dispatch) => {
+    try {
+      dispatch(setIsLoading(true));
+      const roomToUpdate = await axios.put(
+        `/room/${roomData.idRoom}`,
+        roomData
+      );
+      const roomUpdated = await roomToUpdate.data;
+      dispatch(addRooms(roomUpdated));
+      dispatch(getRooms());
+      dispatch(setIsLoading(false));
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      console.log(axiosError);
+      dispatch(setErrorRoom(axiosError));
+    }
+  };
+};
+
+export const { setRooms, addRooms, setIsLoading, setErrorRoom } =
+  roomSlice.actions;
+export default roomSlice.reducer;

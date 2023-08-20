@@ -1,22 +1,19 @@
 import { useState } from "react";
-import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { Hotel } from "../../types/types";
-import { createHotel } from "../../redux/slices/hotel.slice";
+import { Hotel, updateHotelFormProps } from "../../types/types";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { updateHotel } from "../../redux/slices/hotel.slice";
 
-const HotelForm = () => {
+const UpdateHotelForm = ({ handleOpen, hotel }: updateHotelFormProps) => {
   const dispatch = useAppDispatch();
-  const hotelState = useAppSelector((state) => state.hotelReducer);
-  const { error, isLoading } = hotelState;
-  console.log(error, isLoading);
 
-  const initialState = {
-    name: "",
-    address: "",
-    city: "",
-    country: "",
-    description: "",
-  };
-  const [formData, setFormData] = useState<Hotel>(initialState);
+  const [formData, setFormData] = useState<Hotel>({
+    idHotel: hotel?.idHotel,
+    name: hotel?.name,
+    address: hotel?.address,
+    city: hotel?.city,
+    country: hotel?.country,
+    description: hotel?.description,
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -29,10 +26,8 @@ const HotelForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(createHotel(formData));
-    setFormData(initialState);
+    dispatch(updateHotel(formData));
   };
-
   const formStyles = {
     input:
       "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
@@ -42,11 +37,19 @@ const HotelForm = () => {
     textArea:
       "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline resize-none ",
   };
-
   return (
-    <article>
+    <section className="w-[90%] h-96 flex flex-col items-center py-16 px-44 gap-3">
+      <h2 className="font-bold text-2xl">Actualizar Información del Hotel</h2>
+      <button
+        className={formStyles.button}
+        onClick={() => {
+          handleOpen();
+        }}
+      >
+        cerrar
+      </button>
       <form
-        className=" flex flex-col items-center justify-center"
+        className=" flex flex-col items-center justify-center w-screen"
         onSubmit={handleSubmit}
       >
         <h2 className="font-bold text-gray-700  text-2xl m-4 ">
@@ -123,11 +126,11 @@ const HotelForm = () => {
           </div>
         </div>
         <button className={formStyles.button} type="submit">
-          Registrar
+          Actualizar
         </button>
       </form>
-    </article>
+    </section>
   );
 };
 
-export default HotelForm;
+export default UpdateHotelForm;

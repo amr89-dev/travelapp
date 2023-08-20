@@ -19,6 +19,12 @@ async function getHotels(req, res) {
   }
 }
 
+async function getHotelDetail(req, res) {
+  try {
+    const { id } = req.params;
+    console.log(id);
+  } catch (error) {}
+}
 async function createHotel(req, res) {
   try {
     const { name, address, city, country, description } = req.body;
@@ -93,4 +99,10 @@ async function deleteHotel(req, res) {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 }
-module.exports = { createHotel, updateHotel, deleteHotel, getHotels };
+module.exports = {
+  createHotel,
+  updateHotel,
+  deleteHotel,
+  getHotels,
+  getHotelDetail,
+};

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Layout from "../Layout/Layout";
-import { createUser } from "../../redux/user.slice";
+import { createUser } from "../../redux/slices/user.slice";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { User, UserGender } from "../../types/types";
 
@@ -43,7 +43,7 @@ const SignUp = () => {
   return (
     <Layout>
       <form
-        className=" flex flex-col items-center justify-center"
+        className=" flex flex-col items-center justify-center w-screen"
         onSubmit={handleSubmit}
       >
         <h2 className="font-bold text-gray-700  text-2xl m-4 ">

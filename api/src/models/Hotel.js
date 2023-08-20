@@ -34,6 +34,9 @@ const Hotel = database.define(
     description: {
       type: DataTypes.STRING,
     },
+    image: {
+      type: DataTypes.STRING,
+    },
   },
   {
     timestamps: false,

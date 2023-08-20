@@ -85,19 +85,22 @@ const NavBar = () => {
           ))}
         </ul> */}
         <ul className="flex flex-row gap-1 items-center">
-          {location !== "signup" && (
-            <Link to="signup">
-              <button className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-3 border border-white hover:border-transparent rounded">
-                Registrate
-              </button>
-            </Link>
-          )}
-          <li>
-            <button className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-3 border border-white hover:border-transparent rounded">
-              Inicia Sesión
-            </button>
-          </li>
-          {isAuth && (
+          {!isAuth ? (
+            <div>
+              {location !== "signup" && (
+                <Link to="signup">
+                  <button className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-3 border border-white hover:border-transparent rounded">
+                    Registrate
+                  </button>
+                </Link>
+              )}
+              <Link to="">
+                <button className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-3 border border-white hover:border-transparent rounded">
+                  Inicia Sesión
+                </button>
+              </Link>
+            </div>
+          ) : (
             <li>
               <Link to="/dashboard">👤</Link>
             </li>

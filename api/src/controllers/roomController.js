@@ -7,7 +7,14 @@ async function createRooms(req, res) {
   try {
     const { idHotel, numRooms, roomType, roomPrice, roomLocation, available } =
       req.body;
-
+    console.log({
+      idHotel,
+      numRooms,
+      roomType,
+      roomPrice,
+      roomLocation,
+      available,
+    });
     const hotel = await Hotel.findByPk(idHotel);
 
     if (!hotel) {
@@ -19,7 +26,7 @@ async function createRooms(req, res) {
     for (let i = 1; i <= numRooms; i++) {
       roomsToCreate.push({
         roomType,
-        roomPrice,
+        roomPrice: Number(roomPrice),
         roomLocation,
         available,
         hotelId: idHotel,
@@ -54,10 +61,9 @@ async function getRooms(req, res) {
 
 async function updateRooms(req, res) {
   try {
-    const { id } = req.params;
-    const { roomPrice, roomType } = req.body;
+    const { roomPrice, roomType, idRoom } = req.body;
 
-    const roomToUpdate = await Room.findByPk(id);
+    const roomToUpdate = await Room.findByPk(idRoom);
 
     if (!roomToUpdate) {
       return res.status(404).json({ message: "Habitación no encontrada" });

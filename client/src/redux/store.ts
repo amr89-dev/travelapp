@@ -1,13 +1,15 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
-import authReducer from "./auth.slice";
-import userReducer from "./user.slice";
-import hotelReducer from "./hotel.slice";
+import authReducer from "./slices/auth.slice";
+import userReducer from "./slices/user.slice";
+import hotelReducer from "./slices/hotel.slice";
+import roomReducer from "./slices/room.slice";
 
 const store = configureStore({
   reducer: {
     authReducer: authReducer,
     userReducer: userReducer,
     hotelReducer: hotelReducer,
+    roomReducer: roomReducer,
   },
 });
 

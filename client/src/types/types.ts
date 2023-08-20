@@ -3,6 +3,23 @@ import { AxiosError } from "axios";
 export type childrenProps = {
   children: React.ReactNode;
 };
+export type sideBarProps = {
+  handleView: (e: React.MouseEvent<HTMLButtonElement>) => void;
+};
+export type hotelInformationProps = {
+  hotel: Hotel;
+};
+export type updateHotelFormProps = {
+  handleOpen: () => void;
+  hotel?: Hotel;
+};
+export type updateRoomFormProps = {
+  handleOpen: () => void;
+  room?: Room;
+};
+export type SearchBarProps = {
+  handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
 /*----- REDUX ------*/
 
@@ -31,13 +48,14 @@ export interface UserInitialState {
 //HOTEL
 export type Hotel = {
   idHotel?: string;
-  name: string;
-  address: string;
-  city: string;
-  country: string;
+  name?: string;
+  address?: string;
+  city?: string;
+  country?: string;
   available?: boolean;
   description?: string;
   rooms?: Room[];
+  image?: string;
 };
 
 export interface HotelInitialState {
@@ -51,10 +69,23 @@ export interface HotelCardProps {
 }
 //ROOM
 export type Room = {
-  idRoom: string;
-  roomType: string;
-  roomPrice: number;
-  roomLocation: string;
-  available: boolean;
-  hotelId: string;
+  idRoom?: string;
+  numRooms?: number;
+  roomType?: string;
+  roomPrice?: string;
+  roomLocation?: string;
+  available?: boolean;
+  hotelId?: string;
+  resevations?: Date;
 };
+export interface RoomInitialState {
+  rooms: Room[];
+  error: string | null;
+  isLoading: boolean;
+}
+export interface RoomFormProps {
+  handleOpenRoomForm: () => void;
+}
+export interface RoomCardProps {
+  roomData: Room;
+}
