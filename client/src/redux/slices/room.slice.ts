@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import { Room, RoomInitialState } from "../../types/types";
 import { AppThunk } from "../store";
 import axios, { AxiosError } from "axios";
+import { gethotels } from "./hotel.slice";
 
 const initialState: RoomInitialState = {
   rooms: [],
@@ -60,6 +61,7 @@ export const createRoom = (roomData: Room): AppThunk => {
       const hotelToCreate = await axios.post("/room", roomData);
       const hotelCreated = await hotelToCreate.data;
       dispatch(addRooms(hotelCreated));
+      dispatch(gethotels());
       dispatch(setIsLoading(false));
     } catch (err) {
       const axiosError = err as AxiosError;

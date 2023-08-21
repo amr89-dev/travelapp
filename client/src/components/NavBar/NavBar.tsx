@@ -1,11 +1,14 @@
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
+import UserProfile from "../UserProfile/UserProfile";
+import { useAppSelector } from "../../hooks/reduxHooks";
 
 const NavBar = () => {
+  //const dispatch = useAppDispatch();
+  const profile = useAppSelector(({ authReducer }) => authReducer.loggedUser);
   const [menuIsOpen, setMenuIsOpen] = useState(true);
   const location = useLocation().pathname.slice(1);
-
   const isAuth = useAuth();
 
   /*   const links = [
@@ -22,8 +25,10 @@ const NavBar = () => {
     pending: "mx-2",
   }; */
 
+  const handleLogout = () => {};
+
   return (
-    <div className="bg-blue-700  text-white min-w-screen-lg shadow-lg ">
+    <div className="bg-blue-700  text-white min-w-screen-lg shadow-lg fixed w-screen">
       <nav
         className={` max-w-screen-xl flex flex-row items-center mx-auto p-2 justify-between h-16 `}
       >
@@ -94,7 +99,7 @@ const NavBar = () => {
                   </button>
                 </Link>
               )}
-              <Link to="">
+              <Link to="/login">
                 <button className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-3 border border-white hover:border-transparent rounded">
                   Inicia Sesión
                 </button>
@@ -102,7 +107,8 @@ const NavBar = () => {
             </div>
           ) : (
             <li>
-              <Link to="/dashboard">👤</Link>
+              {/* <Link to="/dashboard">👤</Link> */}
+              <UserProfile handleLogout={handleLogout} profile={profile} />
             </li>
           )}
         </ul>

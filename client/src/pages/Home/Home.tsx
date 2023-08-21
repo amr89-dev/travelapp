@@ -10,6 +10,7 @@ const Home = () => {
 
   const hotelsToRender = hotels.filter((hotel) => {
     return (
+      hotel.available ||
       hotel.name?.toLocaleLowerCase().includes(inputSearch) ||
       hotel.city?.toLocaleLowerCase().includes(inputSearch) ||
       hotel.country?.toLocaleLowerCase().includes(inputSearch)

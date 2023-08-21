@@ -20,6 +20,10 @@ export type updateRoomFormProps = {
 export type SearchBarProps = {
   handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
+export type UserProfileNavBarProps = {
+  handleLogout: () => void;
+  profile: UserLogin;
+};
 
 /*----- REDUX ------*/
 
@@ -40,9 +44,18 @@ export type User = {
   documentNumber: string;
   phone: string;
 };
+export interface UserLogin {
+  email: string;
+  password?: string;
+  id?: string;
+  role?: string;
+  accessToken?: string;
+  refreshToken?: string;
+}
 export interface UserInitialState {
   user: User;
-  error: AxiosError | string | null;
+  error: AxiosError | null;
+  success: boolean | null;
 }
 
 //HOTEL
@@ -88,4 +101,13 @@ export interface RoomFormProps {
 }
 export interface RoomCardProps {
   roomData: Room;
+}
+
+//LOGIN
+export interface LoginInitialState {
+  isAuthenticated: boolean;
+
+  loggedUser: UserLogin;
+  error: AxiosError | null;
+  success: boolean | null;
 }

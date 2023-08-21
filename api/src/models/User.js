@@ -1,6 +1,7 @@
 const { DataTypes } = require("sequelize");
 const { database } = require("../DB");
 const Reservation = require("./Reservation");
+const bcrypt = require("bcrypt");
 
 const User = database.define(
   "users",
@@ -51,6 +52,10 @@ const User = database.define(
     timestamps: false,
   }
 );
+User.beforeCreate(async (user) => {
+  const hashedPassword = await bcrypt.hash(user.password, 10);
+  user.password = hashedPassword;
+});
 
 User.hasMany(Reservation, {
   foreignKey: "userId",

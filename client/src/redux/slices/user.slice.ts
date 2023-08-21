@@ -16,6 +16,7 @@ const initialState: UserInitialState = {
     phone: "",
   },
   error: null,
+  success: null,
 };
 
 const userSlice = createSlice({
@@ -41,6 +42,12 @@ const userSlice = createSlice({
         error: action.payload,
       };
     },
+    setSuccess(state, action) {
+      return {
+        ...state,
+        success: action.payload,
+      };
+    },
   },
 });
 export const createUser = (userData: User): AppThunk => {
@@ -49,14 +56,16 @@ export const createUser = (userData: User): AppThunk => {
       const userToCreate = await axios.post("/user", userData);
       const userCreated = await userToCreate.data;
       dispatch(addUser(userCreated));
+      dispatch(setSuccess(true));
     } catch (error) {
-      const axiosError = error as AxiosError;
-
-      dispatch(setError(axiosError.response?.data));
+      if (axios.isAxiosError(error)) {
+        const axiosError = error as AxiosError;
+        dispatch(setError(axiosError?.response?.data));
+      }
     }
   };
 };
 
-export const { getUser, addUser, setError } = userSlice.actions;
+export const { getUser, addUser, setError, setSuccess } = userSlice.actions;
 
 export default userSlice.reducer;

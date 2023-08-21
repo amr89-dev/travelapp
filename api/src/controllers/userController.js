@@ -22,6 +22,7 @@ async function createUser(req, res) {
       documentType,
       documentNumber,
       phone,
+      role,
     } = req.body;
 
     if (
@@ -35,13 +36,11 @@ async function createUser(req, res) {
       !documentNumber ||
       !phone
     ) {
-      return res
-        .status(400)
-        .json({ error: "Faltan datos name, username, email, password" });
+      return res.status(400).json({ message: "Faltan datos algunos datos" });
     }
     const usernameMatch = await User.findOne({
       where: {
-        [Sequelize.Op.and]: [{ documentNumber, email }],
+        [Sequelize.Op.or]: [{ documentNumber, email }],
       },
     });
 
@@ -58,10 +57,11 @@ async function createUser(req, res) {
       documentType,
       documentNumber,
       phone,
+      role,
     });
 
     res.status(200).json({
-      usuarioCreado: newUser,
+      userCreated: newUser,
     });
   } catch (err) {
     res.status(500).json({ message: "Ocurrió un error" });

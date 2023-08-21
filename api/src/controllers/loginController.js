@@ -1,11 +1,19 @@
 const bcrypt = require("bcrypt");
 const User = require("../models/User"); // Asegúrate de importar el modelo de usuario
+const {
+  generateAccessToken,
+  generateRefreshToken,
+} = require("../auth/generateToken");
+const Token = require("../models/Token");
 
 async function login(req, res) {
-  const { username, password } = req.body;
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: "Faltan datos algunos datos" });
+  }
 
   try {
-    const user = await User.findOne({ where: { username } });
+    const user = await User.findOne({ where: { email } });
 
     if (!user) {
       return res.status(401).json({ message: "Usuario no encontrado" });
@@ -19,7 +27,28 @@ async function login(req, res) {
         .json({ message: "Usuario o contraseña incorrecta" });
     }
 
-    res.status(200).json({ message: "Inicio de sesión exitoso" });
+    //autenticar ususario
+    const userDetails = {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+    };
+    const createAccesToken = () => {
+      return generateAccessToken(userDetails);
+    };
+    const createRefreshToken = async () => {
+      const refreshToken = generateRefreshToken(userDetails);
+      try {
+        await Token.create({ token: refreshToken });
+      } catch (error) {
+        console.log("Error al crear el token en la base de datos", error);
+      }
+      return refreshToken;
+    };
+    const accessToken = createAccesToken();
+    const refreshToken = await createRefreshToken();
+
+    res.status(200).json({ accessToken, refreshToken, userDetails });
   } catch (error) {
     console.error("Error al iniciar sesión:", error);
     res.status(500).json({ message: "Error interno del servidor" });

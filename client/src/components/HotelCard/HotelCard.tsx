@@ -14,6 +14,10 @@ const HotelCard = ({ hotelData }: HotelCardProps) => {
       <p>{name}</p>
       <p>{`${city}, ${country}`}</p>
       <p>{description}</p>
+      <div className="flex flex-row justify-around">
+        <button>Ver</button>
+        <button>Reservar</button>
+      </div>
     </div>
   );
 };

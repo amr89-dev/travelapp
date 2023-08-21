@@ -13,14 +13,18 @@ const UpdateHotelForm = ({ handleOpen, hotel }: updateHotelFormProps) => {
     city: hotel?.city,
     country: hotel?.country,
     description: hotel?.description,
+    available: hotel?.available,
   });
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value,
+      available: e.target.value === "true" ? true : false,
     });
   };
 
@@ -37,6 +41,8 @@ const UpdateHotelForm = ({ handleOpen, hotel }: updateHotelFormProps) => {
     textArea:
       "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline resize-none ",
   };
+  console.log(formData);
+
   return (
     <section className="w-[90%] h-96 flex flex-col items-center py-16 px-44 gap-3">
       <h2 className="font-bold text-2xl">Actualizar Información del Hotel</h2>
@@ -52,9 +58,6 @@ const UpdateHotelForm = ({ handleOpen, hotel }: updateHotelFormProps) => {
         className=" flex flex-col items-center justify-center w-screen"
         onSubmit={handleSubmit}
       >
-        <h2 className="font-bold text-gray-700  text-2xl m-4 ">
-          Crea un nuevo hotel
-        </h2>
         <div className=" shadow-2xl rounded-lg   sm:w-1/2 flex flex-col p-4 gap-3">
           <div>
             <label htmlFor="name" className={formStyles.label}>
@@ -123,6 +126,30 @@ const UpdateHotelForm = ({ handleOpen, hotel }: updateHotelFormProps) => {
               onChange={handleChange}
               value={formData.description}
             />
+          </div>
+          <div>
+            <label htmlFor="available" className={formStyles.label}>
+              Disponibilidad:
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="available"
+                value={"true"}
+                onChange={handleChange}
+                defaultChecked
+              />
+              disponible
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="available"
+                value={"false"}
+                onChange={handleChange}
+              />
+              No disponible
+            </label>
           </div>
         </div>
         <button className={formStyles.button} type="submit">

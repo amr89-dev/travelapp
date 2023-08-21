@@ -1,11 +1,21 @@
 import { useState } from "react";
-import Layout from "../Layout/Layout";
-import { createUser } from "../../redux/slices/user.slice";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import Layout from "../../components/Layout/Layout";
+import {
+  createUser,
+  setError,
+  setSuccess,
+} from "../../redux/slices/user.slice";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { User, UserGender } from "../../types/types";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
   const dispatch = useAppDispatch();
+  const userState = useAppSelector((state) => state.userReducer);
+  const navigate = useNavigate();
+  const { error, success, user } = userState;
+  console.log({ error, success, user });
 
   const [formData, setFormData] = useState<User>({
     email: "",
@@ -30,7 +40,19 @@ const SignUp = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    Swal.showLoading();
     dispatch(createUser(formData));
+    setFormData({
+      email: "",
+      name: "",
+      lastName: "",
+      password: "",
+      birthdate: "",
+      gender: UserGender.NEUTER,
+      documentType: "",
+      documentNumber: "",
+      phone: "",
+    });
   };
   const formStyles = {
     input:
@@ -39,6 +61,39 @@ const SignUp = () => {
     button:
       "bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
   };
+
+  if (error?.message === "El usuario ya esta registrado") {
+    Swal.fire({
+      title: "Error!",
+      text: `${error.message}`,
+      icon: "error",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#1d4ed8",
+    }).then(() => {
+      dispatch(setError(null));
+      navigate("/login");
+    });
+  } else if (error) {
+    Swal.fire({
+      title: "Error!",
+      text: `${error.message}`,
+      icon: "error",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#1d4ed8",
+    });
+    dispatch(setError(null));
+  } else if (success) {
+    Swal.fire({
+      title: "Exito!",
+      text: `El usuario ha sido creado exitosamente`,
+      icon: "success",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#1d4ed8",
+    }).then(() => {
+      dispatch(setSuccess(null));
+      navigate("/login");
+    });
+  }
 
   return (
     <Layout>
@@ -172,7 +227,7 @@ const SignUp = () => {
               name="documentType"
               id="documentType"
               onChange={handleChange}
-              value={formData.documentNumber}
+              value={formData.documentType}
             >
               <option value="passport">Pasaporte</option>
               <option value="cedulaCiudadania">Cedula de ciudadania</option>

@@ -13,6 +13,7 @@ import HotelDetail from "./components/HotelDetail/HotelDetail.tsx";
 import Notfound from "./pages/Notfound/Notfound.tsx";
 import RoomForm from "./components/RoomForm/RoomForm.tsx";
 import { getRooms } from "./redux/slices/room.slice.ts";
+import SignUp from "./pages/SignUp/SignUp.tsx";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -25,6 +26,10 @@ function App() {
 
       {
         path: "/signup",
+        element: <SignUp />,
+      },
+      {
+        path: "/login",
         element: <Login />,
       },
       {
