@@ -1,13 +1,20 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { Hotel } from "../../types/types";
-import { createHotel } from "../../redux/slices/hotel.slice";
+import {
+  createHotel,
+  setErrorHotel,
+  setSuccess,
+} from "../../redux/slices/hotel.slice";
+import Swal from "sweetalert2";
+import { HandleOpenContext } from "../../utils/context";
 
 const HotelForm = () => {
   const dispatch = useAppDispatch();
   const hotelState = useAppSelector((state) => state.hotelReducer);
-  const { error, isLoading } = hotelState;
-  console.log(error, isLoading);
+  const context = useContext(HandleOpenContext);
+
+  const { error, success } = hotelState;
 
   const initialState = {
     name: "",
@@ -29,6 +36,8 @@ const HotelForm = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    Swal.showLoading();
+
     dispatch(createHotel(formData));
     setFormData(initialState);
   };
@@ -42,9 +51,30 @@ const HotelForm = () => {
     textArea:
       "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline resize-none ",
   };
+  if (error?.message) {
+    Swal.fire({
+      title: "Error!",
+      text: `${error?.message}`,
+      icon: "error",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#1d4ed8",
+    }).then(() => {
+      dispatch(setErrorHotel(null));
+    });
+  } else if (success) {
+    Swal.fire({
+      title: "Exito!",
+      text: `El hotel ha sido creado exitosamente`,
+      icon: "success",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#1d4ed8",
+    }).then(() => {
+      dispatch(setSuccess(null));
+    });
+  }
 
   return (
-    <article>
+    <article className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] min-h-screen  p-8 bg-white rounded-lg border">
       <form
         className=" flex flex-col items-center justify-center"
         onSubmit={handleSubmit}
@@ -69,7 +99,7 @@ const HotelForm = () => {
           </div>
           <div>
             <label htmlFor="address" className={formStyles.label}>
-              Dirección del hotel:
+              Dirección:
             </label>
             <input
               type="text"
@@ -81,23 +111,10 @@ const HotelForm = () => {
               placeholder="Ingrese la dirección del hotel"
             />
           </div>
-          <div>
-            <label htmlFor="country" className={formStyles.label}>
-              Pais del hotel:
-            </label>
-            <input
-              type="text"
-              name="country"
-              className={formStyles.input}
-              id="country"
-              onChange={handleChange}
-              value={formData.country}
-              placeholder="Ingrese el pais del hotel"
-            />
-          </div>
+
           <div>
             <label htmlFor="city" className={formStyles.label}>
-              Ciudad del hotel:
+              Ciudad:
             </label>
             <input
               type="text"
@@ -107,6 +124,20 @@ const HotelForm = () => {
               onChange={handleChange}
               value={formData.city}
               placeholder="Ingrese la ciudad del hotel"
+            />
+          </div>
+          <div>
+            <label htmlFor="country" className={formStyles.label}>
+              Pais:
+            </label>
+            <input
+              type="text"
+              name="country"
+              className={formStyles.input}
+              id="country"
+              onChange={handleChange}
+              value={formData.country}
+              placeholder="Ingrese el pais del hotel"
             />
           </div>
           <div>
@@ -122,9 +153,19 @@ const HotelForm = () => {
             />
           </div>
         </div>
-        <button className={formStyles.button} type="submit">
-          Registrar
-        </button>
+        <div className=" flex flex-row justify-between">
+          <button className={formStyles.button} type="submit">
+            Registrar
+          </button>
+          <button
+            className={formStyles.button}
+            onClick={() => {
+              context?.handleHotelFormOpen();
+            }}
+          >
+            Cerrar
+          </button>
+        </div>
       </form>
     </article>
   );

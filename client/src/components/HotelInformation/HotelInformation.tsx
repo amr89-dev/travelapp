@@ -6,62 +6,59 @@ import { hotelInformationProps } from "../../types/types";
 
 const HotelInformation = ({ hotel }: hotelInformationProps) => {
   return (
-    <section className="w-[90%] h-96 flex flex-col items-center py-16 px-44 gap-3 border">
-      <h2 className="font-bold text-4xl leading-10 mb-4">
-        Información del Hotel
-      </h2>
-      <aside className=" w-full min-h-full grid grid-cols-4 gap-5 ">
-        <div className="flex flex-col gap-5 items-center min-h-full py-3">
+    <section className="flex flex-col items-center border">
+      <h2 className="font-bold text-xl ">Información del Hotel</h2>
+
+      <aside className=" w-full min-h-full flex flex-col ">
+        <div className="flex flex-row  items-center  ">
           <figure>
             <img src={worldIcon} alt="world" />
           </figure>
           <div className="flex flex-col items-center">
-            <h3 className="font-bold">Nombre</h3>
-            <h5 className=" text-gray-600 text-sm"> Hotel</h5>
+            <h3 className="font-light">Nombre</h3>
+            <p className=" font-bold text-xl text-center">
+              {hotel?.name ?? "name"}
+            </p>
           </div>
-          <p className=" font-bold text-xl text-center">
-            {hotel?.name ?? "name"}
-          </p>
         </div>
 
-        <div className="flex flex-col gap-5 items-center min-h-full py-3">
+        <div className="flex flex-row items-center  ">
           <figure>
             <img src={addressIcon} alt="address" />
           </figure>
           <div className="flex flex-col items-center">
-            <h3 className="font-bold">Dirección</h3>
-            <h5 className=" text-gray-600 text-sm">Urbano</h5>
+            <h3 className="font-light">Dirección</h3>
+            <p className=" font-bold text-xl text-center">
+              {hotel?.address || "address"}
+            </p>
           </div>
-          <p className=" font-bold text-xl text-center">
-            {hotel?.address || "address"}
-          </p>
         </div>
-        <div className="flex flex-col gap-5 items-center min-h-full py-3">
+
+        <div className="flex flex-row  items-center ">
           <figure>
             <img src={cityIcon} alt="world" />
           </figure>
           <div className="flex flex-col items-center">
-            <h3 className="font-bold">Ciudad</h3>
-            <h5 className=" text-gray-600 text-sm"> {hotel?.city || "city"}</h5>
+            <h3 className="font-light">Ciudad</h3>
+            <div className="flex flex-row">
+              <p className="font-bold text-xl text-center">
+                {hotel?.city || "city"}, {hotel?.country || "country"}
+              </p>
+            </div>
           </div>
-          <p className=" font-bold text-xl text-center">
-            {hotel?.country || "country"}
-          </p>
         </div>
-        <div className="flex flex-col gap-5 items-center min-h-full py-3">
+
+        <div className="flex flex-row  items-center">
           <figure>
             <img src={descriptionIcon} alt="world" />
           </figure>
           <div className="flex flex-col items-center">
-            <h3 className="font-bold">Descripción</h3>
-            <h5 className=" text-gray-600 text-sm">
-              {" "}
-              {hotel?.country || "country"}
-            </h5>
+            <h3 className="font-light">Descripción</h3>
+
+            <p className=" font-bold text-xl text-center">
+              {hotel?.description || "name"}
+            </p>
           </div>
-          <p className=" font-bold text-xl text-center">
-            {hotel?.description || "name"}
-          </p>
         </div>
       </aside>
     </section>

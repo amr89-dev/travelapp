@@ -5,9 +5,8 @@ import { Hotel, HotelInitialState } from "../../types/types";
 
 const initialState: HotelInitialState = {
   hotels: [],
-
   error: null,
-  isLoading: false,
+  success: null,
 };
 
 const hotelSlice = createSlice({
@@ -32,10 +31,10 @@ const hotelSlice = createSlice({
         error: action.payload,
       };
     },
-    setIsLoading(state, action) {
+    setSuccess(state, action) {
       return {
         ...state,
-        isLoading: action.payload,
+        success: action.payload,
       };
     },
   },
@@ -56,30 +55,28 @@ export const gethotels = (): AppThunk => {
 export const createHotel = (hotelData: Hotel): AppThunk => {
   return async (dispatch) => {
     try {
-      dispatch(setIsLoading(true));
       const hotelToCreate = await axios.post("/hotel", hotelData);
       const hotelCreated = await hotelToCreate.data;
       dispatch(addHotel(hotelCreated));
-      dispatch(setIsLoading(false));
+      dispatch(gethotels());
+      dispatch(setSuccess(true));
     } catch (err) {
       const axiosError = err as AxiosError;
-      console.log(axiosError);
-      dispatch(setErrorHotel(axiosError));
+      dispatch(setErrorHotel(axiosError.response?.data));
     }
   };
 };
 export const updateHotel = (hotelData: Hotel): AppThunk => {
   return async (dispatch) => {
     try {
-      dispatch(setIsLoading(true));
       const hotelToUpdate = await axios.put(
         `/hotel/${hotelData.idHotel}`,
         hotelData
       );
       const hotelCreated = await hotelToUpdate.data;
       dispatch(addHotel(hotelCreated));
+      dispatch(setSuccess(false));
       dispatch(gethotels());
-      dispatch(setIsLoading(false));
     } catch (err) {
       const axiosError = err as AxiosError;
       console.log(axiosError);
@@ -88,7 +85,7 @@ export const updateHotel = (hotelData: Hotel): AppThunk => {
   };
 };
 
-export const { getHotels, addHotel, setErrorHotel, setIsLoading } =
+export const { getHotels, addHotel, setErrorHotel, setSuccess } =
   hotelSlice.actions;
 
 export default hotelSlice.reducer;

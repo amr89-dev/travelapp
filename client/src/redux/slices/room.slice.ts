@@ -7,7 +7,7 @@ import { gethotels } from "./hotel.slice";
 const initialState: RoomInitialState = {
   rooms: [],
   error: null,
-  isLoading: false,
+  success: false,
 };
 
 const roomSlice = createSlice({
@@ -62,6 +62,7 @@ export const createRoom = (roomData: Room): AppThunk => {
       const hotelCreated = await hotelToCreate.data;
       dispatch(addRooms(hotelCreated));
       dispatch(gethotels());
+      dispatch(getRooms());
       dispatch(setIsLoading(false));
     } catch (err) {
       const axiosError = err as AxiosError;

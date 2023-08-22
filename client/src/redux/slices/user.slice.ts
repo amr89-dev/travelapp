@@ -14,6 +14,7 @@ const initialState: UserInitialState = {
     documentType: "",
     documentNumber: "",
     phone: "",
+    role: "",
   },
   error: null,
   success: null,

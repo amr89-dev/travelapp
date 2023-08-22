@@ -3,6 +3,7 @@ import authReducer from "./slices/auth.slice";
 import userReducer from "./slices/user.slice";
 import hotelReducer from "./slices/hotel.slice";
 import roomReducer from "./slices/room.slice";
+import reservationReducer from "./slices/reservations.slice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     userReducer: userReducer,
     hotelReducer: hotelReducer,
     roomReducer: roomReducer,
+    reservationReducer: reservationReducer,
   },
 });
 

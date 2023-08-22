@@ -8,7 +8,7 @@ const UserProfile = ({ handleLogout, profile }: UserProfileNavBarProps) => {
   const location = useLocation().pathname;
   const profilePhoto = "https://source.unsplash.com/random/800x600/?avatar=1";
 
-  console.log("profile -> ", profile);
+  const { userDetails } = profile;
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -42,12 +42,10 @@ const UserProfile = ({ handleLogout, profile }: UserProfileNavBarProps) => {
           isOpen ? "visible" : "hidden"
         } z-10 fixed top-[64px] right-0 w-48 bg-white divide-y divide-gray-100 rounded-lg shadow`}
       >
-        <NavLink to={"/account"}>
+        <NavLink to={"/"}>
           <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
-            <div> "Nombre de usuario"</div>
-            <div className="font-medium truncate">
-              {profile ? profile.email : "email"}
-            </div>
+            <div className="font-medium truncate"></div>
+            {profile ? userDetails?.name : "Nombre"}
           </div>
         </NavLink>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">

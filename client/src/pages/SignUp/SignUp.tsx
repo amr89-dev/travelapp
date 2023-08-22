@@ -14,8 +14,7 @@ const SignUp = () => {
   const dispatch = useAppDispatch();
   const userState = useAppSelector((state) => state.userReducer);
   const navigate = useNavigate();
-  const { error, success, user } = userState;
-  console.log({ error, success, user });
+  const { error, success } = userState;
 
   const [formData, setFormData] = useState<User>({
     email: "",
@@ -229,6 +228,9 @@ const SignUp = () => {
               onChange={handleChange}
               value={formData.documentType}
             >
+              <option value="" disabled>
+                Tipo de documento
+              </option>
               <option value="passport">Pasaporte</option>
               <option value="cedulaCiudadania">Cedula de ciudadania</option>
               <option value="cedulaExtranjeria">Cedulad de extranjeria</option>

@@ -50,6 +50,7 @@ export const loginUser = (userData: UserLogin): AppThunk => {
       dispatch(setSuccess(true));
       dispatch(getAuth(true));
       dispatch(setLoggedUser(userLogged));
+      localStorage.setItem("userLogged", JSON.stringify(userLogged));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -58,6 +59,8 @@ export const loginUser = (userData: UserLogin): AppThunk => {
     }
   };
 };
+
+
 
 export const { getAuth, setSuccess, setError, setLoggedUser } =
   authSlice.actions;

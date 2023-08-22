@@ -3,6 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import UserProfile from "../UserProfile/UserProfile";
 import { useAppSelector } from "../../hooks/reduxHooks";
+import { useRole } from "../../hooks/useRole";
 
 const NavBar = () => {
   //const dispatch = useAppDispatch();
@@ -10,6 +11,7 @@ const NavBar = () => {
   const [menuIsOpen, setMenuIsOpen] = useState(true);
   const location = useLocation().pathname.slice(1);
   const isAuth = useAuth();
+  const isAdmin = useRole();
 
   /*   const links = [
     { to: "/", name: "Home" },
@@ -28,7 +30,7 @@ const NavBar = () => {
   const handleLogout = () => {};
 
   return (
-    <div className="bg-blue-700  text-white min-w-screen-lg shadow-lg fixed w-screen">
+    <div className="bg-blue-700  text-white min-w-screen-lg shadow-lg  w-screen sticky top-0">
       <nav
         className={` max-w-screen-xl flex flex-row items-center mx-auto p-2 justify-between h-16 `}
       >
@@ -106,10 +108,22 @@ const NavBar = () => {
               </Link>
             </div>
           ) : (
-            <li>
-              {/* <Link to="/dashboard">👤</Link> */}
-              <UserProfile handleLogout={handleLogout} profile={profile} />
-            </li>
+            <ul className="flex flex-row items-center">
+              {isAdmin && (
+                <li>
+                  <Link to="/dashboard">
+                    <button className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-3 border border-white hover:border-transparent rounded">
+                      Dashboard
+                    </button>
+                  </Link>
+                </li>
+              )}
+
+              <li>
+                {/* <Link to="/dashboard">👤</Link> */}
+                <UserProfile handleLogout={handleLogout} profile={profile} />
+              </li>
+            </ul>
           )}
         </ul>
       </nav>

@@ -1,45 +1,37 @@
-import { sideBarProps } from "../../types/types";
+import { NavLink } from "react-router-dom";
 
-const SideBar = ({ handleView }: sideBarProps) => {
+const SideBar = () => {
   return (
     <section className=" w-56 h-[calc(100vh_-_64px)] border">
       <nav className="flex flex-col items-center">
-        <button
-          onClick={(e) => {
-            handleView(e);
-          }}
+        <NavLink
+          to="/dashboard/hotel"
           id="hotel"
-          className="flex w-full py-4 px-5 justify-start items-center gap-3 self-stretch hover:bg-blue-700 hover:text-white "
+          className="flex w-full py-4 px-5 justify-start items-center gap-3 self-stretch hover:bg-blue-700 hover:text-white"
         >
           🏨 <p className=" leading-5 font-medium">Hoteles</p>
-        </button>
-        <button
-          onClick={(e) => {
-            handleView(e);
-          }}
+        </NavLink>
+        <NavLink
+          to="/dashboard/rooms"
           id="rooms"
           className="flex w-full py-4 px-5 justify-start items-center gap-3 self-stretch hover:bg-blue-700 hover:text-white "
         >
           🛌🏽 <p className=" leading-5 font-medium">Habitaciones</p>
-        </button>
-        <button
-          onClick={(e) => {
-            handleView(e);
-          }}
+        </NavLink>
+        <NavLink
+          to="/dashboard/reservations"
           id="reservations"
           className="flex py-4 px-5 justify-start items-center gap-3 self-stretch hover:bg-blue-700 hover:text-white"
         >
           📅 <p className=" leading-5 font-medium">Reservas</p>
-        </button>
-        <button
-          onClick={(e) => {
-            handleView(e);
-          }}
+        </NavLink>
+        <NavLink
+          to="/dashboard/favorites"
           id="favs"
           className="flex py-4 px-5 justify-start items-center gap-3 self-stretch hover:bg-blue-700 hover:text-white"
         >
           ⭐<p className=" leading-5 font-medium">Favoritos</p>
-        </button>
+        </NavLink>
       </nav>
     </section>
   );

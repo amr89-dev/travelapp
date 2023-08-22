@@ -29,7 +29,7 @@ async function createHotel(req, res) {
   try {
     const { name, address, city, country, description } = req.body;
     if (!name || !address || !city || !country) {
-      res.status(401).json({ error: "Faltan datos name, address" });
+      return res.status(401).json({ message: "Faltan datos para le registro" });
     }
     const hotelMatch = await Hotel.findOne({ where: { name, address } });
 
@@ -47,7 +47,7 @@ async function createHotel(req, res) {
       description,
     });
 
-    res.status(200).json({
+    return res.status(200).json({
       hotelCreado: newHotel,
     });
   } catch (error) {

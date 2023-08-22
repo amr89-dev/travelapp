@@ -25,7 +25,6 @@ const RoomRow = ({ roomData }: RoomCardProps) => {
       <td>{`${roomPrice}`}</td>
       <td>{`${roomLocation}`}</td>
       <td>{available ? "Disponible" : "No disponible"}</td>
-      <td>{}</td>
       <td className="flex flex-row justify-around gap-2">
         <Link to={`/room/${idRoom}`}>Ver</Link>
         <button

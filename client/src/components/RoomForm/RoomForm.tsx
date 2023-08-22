@@ -1,15 +1,15 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Room } from "../../types/types";
-import { useParams } from "react-router-dom";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { createRoom } from "../../redux/slices/room.slice";
+import { HandleOpenContext } from "../../utils/context";
 
 const RoomForm = () => {
-  const { idHotel } = useParams();
   const dispatch = useAppDispatch();
+  const context = useContext(HandleOpenContext);
 
   const initialState = {
-    idHotel,
+    idHotel: context?.roomFormOpen.id,
     numRooms: 0,
     roomType: "",
     roomPrice: "",
@@ -44,12 +44,12 @@ const RoomForm = () => {
   };
 
   return (
-    <article className={`${formStyles.modal} w-screen `}>
+    <article className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] min-h-screen  p-8 bg-white rounded-lg border">
       <form
         className={` flex flex-col items-center justify-center `}
         onSubmit={handleSubmit}
       >
-        <h2 className="font-bold text-gray-700  text-2xl m-4 bg-red-500">
+        <h2 className="font-bold text-gray-700  text-2xl m-4 ">
           Crea habitaciones para este hotel
         </h2>
 
@@ -113,9 +113,19 @@ const RoomForm = () => {
             />
           </div>
         </div>
-        <button className={formStyles.button} type="submit">
-          Registrar
-        </button>
+        <div className="flex flex-row">
+          <button className={formStyles.button} type="submit">
+            Registrar
+          </button>
+          <button
+            className={formStyles.button}
+            onClick={() => {
+              context?.handleRoomFormOpen(undefined);
+            }}
+          >
+            Cerrar
+          </button>
+        </div>
       </form>
     </article>
   );

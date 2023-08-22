@@ -8,12 +8,16 @@ import ProtectedRoutes from "./utils/ProtectedRoutes";
 import NavBar from "./components/NavBar/NavBar.tsx";
 import { gethotels } from "./redux/slices/hotel.slice.ts";
 import { useAppDispatch } from "./hooks/reduxHooks.ts";
-import HotelForm from "./components/HotelForm/HotelForm.tsx";
-import HotelDetail from "./components/HotelDetail/HotelDetail.tsx";
 import Notfound from "./pages/Notfound/Notfound.tsx";
-import RoomForm from "./components/RoomForm/RoomForm.tsx";
 import { getRooms } from "./redux/slices/room.slice.ts";
 import SignUp from "./pages/SignUp/SignUp.tsx";
+import RoomSectionCards from "./components/RoomsSectionCards/RoomSectionCards.tsx";
+import HotelDashboard from "./components/HotelDashboard/HotelDashboard.tsx";
+import {
+  getAuth,
+  setLoggedUser,
+  setSuccess,
+} from "./redux/slices/auth.slice.ts";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -39,18 +43,24 @@ function App() {
           {
             path: "/dashboard",
             element: <Dashboard />,
-          },
-          {
-            path: "/create-hotel",
-            element: <HotelForm />,
-          },
-          {
-            path: "/:idHotel",
-            element: <HotelDetail />,
-          },
-          {
-            path: "/create-room/:idHotel",
-            element: <RoomForm />,
+            children: [
+              {
+                path: "/dashboard/hotel",
+                element: <HotelDashboard />,
+              },
+              {
+                path: "/dashboard/rooms",
+                element: <RoomSectionCards />,
+              },
+              {
+                path: "/dashboard/reservations",
+                element: <></>,
+              },
+              {
+                path: "/dashboard/favorites",
+                element: <></>,
+              },
+            ],
           },
         ],
       },
@@ -62,15 +72,25 @@ function App() {
     return routes;
   };
 
+  const checkAuth = () => {
+    const isLogger = localStorage.getItem("userLogged") || null;
+
+    if (isLogger) {
+      const userObject = JSON.parse(isLogger);
+      dispatch(setSuccess(true));
+      dispatch(getAuth(true));
+      dispatch(setLoggedUser(userObject));
+    }
+  };
   useEffect(() => {
     dispatch(gethotels());
     dispatch(getRooms());
+    checkAuth();
   }, []);
   return (
     <div className="relative">
       <NavBar />
       <AppRouter />
-      {/* <div className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-72 h-80 bg-red-500 "></div> */}
     </div>
   );
 }

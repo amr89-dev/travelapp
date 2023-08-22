@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Hotel, updateHotelFormProps } from "../../types/types";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { updateHotel } from "../../redux/slices/hotel.slice";
+import { HandleOpenContext } from "../../utils/context";
 
-const UpdateHotelForm = ({ handleOpen, hotel }: updateHotelFormProps) => {
+const UpdateHotelForm = ({ hotel }: updateHotelFormProps) => {
   const dispatch = useAppDispatch();
+  const context = useContext(HandleOpenContext);
 
   const [formData, setFormData] = useState<Hotel>({
     idHotel: hotel?.idHotel,
@@ -41,15 +43,14 @@ const UpdateHotelForm = ({ handleOpen, hotel }: updateHotelFormProps) => {
     textArea:
       "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline resize-none ",
   };
-  console.log(formData);
 
   return (
-    <section className="w-[90%] h-96 flex flex-col items-center py-16 px-44 gap-3">
+    <section className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] min-h-screen  p-8 bg-white rounded-lg border">
       <h2 className="font-bold text-2xl">Actualizar Información del Hotel</h2>
       <button
         className={formStyles.button}
         onClick={() => {
-          handleOpen();
+          context?.handleHotelUpdateOpen(undefined);
         }}
       >
         cerrar

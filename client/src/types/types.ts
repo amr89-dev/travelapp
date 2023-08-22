@@ -1,4 +1,5 @@
 import { AxiosError } from "axios";
+import { NavLinkProps } from "react-router-dom";
 
 export type childrenProps = {
   children: React.ReactNode;
@@ -8,9 +9,9 @@ export type sideBarProps = {
 };
 export type hotelInformationProps = {
   hotel: Hotel;
+  rooms?: Room[];
 };
 export type updateHotelFormProps = {
-  handleOpen: () => void;
   hotel?: Hotel;
 };
 export type updateRoomFormProps = {
@@ -24,6 +25,9 @@ export type UserProfileNavBarProps = {
   handleLogout: () => void;
   profile: UserLogin;
 };
+export interface CustomNavLinkProps extends NavLinkProps {
+  isActive?: boolean;
+}
 
 /*----- REDUX ------*/
 
@@ -43,6 +47,7 @@ export type User = {
   documentType: string;
   documentNumber: string;
   phone: string;
+  role?: string;
 };
 export interface UserLogin {
   email: string;
@@ -51,6 +56,8 @@ export interface UserLogin {
   role?: string;
   accessToken?: string;
   refreshToken?: string;
+  userDetails?: UserLogin;
+  name?: string;
 }
 export interface UserInitialState {
   user: User;
@@ -73,8 +80,8 @@ export type Hotel = {
 
 export interface HotelInitialState {
   hotels: Hotel[];
-  error: string | null;
-  isLoading: boolean;
+  error: AxiosError | null;
+  success: boolean | null;
 }
 
 export interface HotelCardProps {
@@ -89,12 +96,12 @@ export type Room = {
   roomLocation?: string;
   available?: boolean;
   hotelId?: string;
-  resevations?: Date;
+  resevations?: Date[] | undefined;
 };
 export interface RoomInitialState {
   rooms: Room[];
-  error: string | null;
-  isLoading: boolean;
+  error: AxiosError | null;
+  success: boolean | null;
 }
 export interface RoomFormProps {
   handleOpenRoomForm: () => void;
@@ -106,8 +113,15 @@ export interface RoomCardProps {
 //LOGIN
 export interface LoginInitialState {
   isAuthenticated: boolean;
-
   loggedUser: UserLogin;
   error: AxiosError | null;
   success: boolean | null;
 }
+
+//RESERVATION
+export type Reservation = {
+  idRoom: string;
+  checkInDate: string;
+  checkOutDate: string;
+  userId: string;
+};

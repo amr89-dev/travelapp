@@ -32,6 +32,7 @@ async function login(req, res) {
       id: user.id,
       email: user.email,
       role: user.role,
+      name: user.name,
     };
     const createAccesToken = () => {
       return generateAccessToken(userDetails);

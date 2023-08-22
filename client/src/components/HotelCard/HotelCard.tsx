@@ -1,4 +1,5 @@
 import { HotelCardProps } from "../../types/types";
+import defaultImg from "../../assets/defaulimg.svg";
 
 const HotelCard = ({ hotelData }: HotelCardProps) => {
   const { image, name, city, country, description } = hotelData;
@@ -6,7 +7,7 @@ const HotelCard = ({ hotelData }: HotelCardProps) => {
     <div>
       <figure>
         <img
-          src={image}
+          src={image || defaultImg}
           alt={name}
           className="max-h-[160px] md:max-h-[200px] w-full object-cover rounded-xl"
         />

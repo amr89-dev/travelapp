@@ -20,7 +20,6 @@ const Home = () => {
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setinputSearch(e.target.value.toLocaleLowerCase());
   };
-  console.log(inputSearch);
 
   return (
     <Layout>
