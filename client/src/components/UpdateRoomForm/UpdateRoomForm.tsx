@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Room, updateRoomFormProps } from "../../types/types";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { updateRoom } from "../../redux/slices/room.slice";
+import { HandleOpenContext } from "../../utils/context";
 
-const UpdateRoomForm = ({ handleOpen, room }: updateRoomFormProps) => {
+const UpdateRoomForm = ({ room }: updateRoomFormProps) => {
   const dispatch = useAppDispatch();
+  const context = useContext(HandleOpenContext);
 
   const [formData, setFormData] = useState<Room>({
     idRoom: room?.idRoom,
@@ -44,7 +46,7 @@ const UpdateRoomForm = ({ handleOpen, room }: updateRoomFormProps) => {
       <button
         className={formStyles.button}
         onClick={() => {
-          handleOpen();
+          context?.handleRoomUpdateOpen(undefined);
         }}
       >
         cerrar

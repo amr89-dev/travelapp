@@ -24,6 +24,10 @@ const User = database.define(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    lastName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     birthdate: {
       type: DataTypes.DATE,
       allowNull: false,

@@ -15,7 +15,6 @@ export type updateHotelFormProps = {
   hotel?: Hotel;
 };
 export type updateRoomFormProps = {
-  handleOpen: () => void;
   room?: Room;
 };
 export type SearchBarProps = {
@@ -60,6 +59,7 @@ export interface UserLogin {
   name?: string;
 }
 export interface UserInitialState {
+  users: User[];
   user: User;
   error: AxiosError | null;
   success: boolean | null;

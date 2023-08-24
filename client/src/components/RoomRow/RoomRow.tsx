@@ -1,16 +1,10 @@
-import { useState } from "react";
+import { useContext } from "react";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { RoomCardProps } from "../../types/types";
-import { Link } from "react-router-dom";
-import UpdateRoomForm from "../UpdateRoomForm/UpdateRoomForm";
+import { HandleOpenContext } from "../../utils/context";
 
 const RoomRow = ({ roomData }: RoomCardProps) => {
-  const [isOpen, setIsOpen] = useState(false);
-
-  const handleOpen = () => {
-    setIsOpen(!isOpen);
-  };
-
+  const context = useContext(HandleOpenContext);
   const { hotelId, idRoom, roomType, roomPrice, roomLocation, available } =
     roomData;
 
@@ -26,18 +20,22 @@ const RoomRow = ({ roomData }: RoomCardProps) => {
       <td>{`${roomLocation}`}</td>
       <td>{available ? "Disponible" : "No disponible"}</td>
       <td className="flex flex-row justify-around gap-2">
-        <Link to={`/room/${idRoom}`}>Ver</Link>
         <button
           onClick={() => {
-            handleOpen();
+            context?.handleReservationFormOpen(idRoom);
           }}
         >
-          Editar
+          Reservar
         </button>
-        <Link to={`/create-room/${hotelId}`}>Reservar</Link>
+        <button>Ver reservas</button>
+        <button
+          onClick={() => {
+            context?.handleRoomUpdateOpen(idRoom);
+          }}
+        >
+          Editar habitación
+        </button>
       </td>
-
-      {isOpen && <UpdateRoomForm handleOpen={handleOpen} room={roomData} />}
     </tr>
   );
 };

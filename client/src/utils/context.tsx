@@ -3,8 +3,12 @@ import { ReactNode, createContext, useState, FC } from "react";
 interface HandleOpenContextType {
   hotelUpdateOpen: { isOpen: boolean; id: string | undefined };
   handleHotelUpdateOpen: (idHotel: string | undefined) => void;
+  roomUpdateOpen: { isOpen: boolean; id: string | undefined };
+  reservationFormOpen: { isOpen: boolean; id: string | undefined };
+  handleRoomUpdateOpen: (idRoom: string | undefined) => void;
   roomFormOpen: { isOpen: boolean; id: string | undefined };
   handleRoomFormOpen: (idHotel: string | undefined) => void;
+  handleReservationFormOpen: (idRoom: string | undefined) => void;
   hotelDetailOpen: { isOpen: boolean; id: string | undefined };
   handleHotelDetailOpen: (idHotel: string | undefined) => void;
   hotelFormOpen: boolean;
@@ -24,7 +28,15 @@ const HandleOpenProvider: FC<HandleOpenProviderProps> = ({ children }) => {
     isOpen: false,
     id: "",
   });
+  const [roomUpdateOpen, setRoomUpdateOpen] = useState({
+    isOpen: false,
+    id: "",
+  });
   const [roomFormOpen, setRoomFormOpen] = useState({
+    isOpen: false,
+    id: "",
+  });
+  const [reservationFormOpen, setReservationFormOpen] = useState({
     isOpen: false,
     id: "",
   });
@@ -41,14 +53,26 @@ const HandleOpenProvider: FC<HandleOpenProviderProps> = ({ children }) => {
       setHotelUpdateOpen({ isOpen: true, id: idHotel || "" });
     }
   };
+  const handleRoomUpdateOpen = (idRoom: string | undefined) => {
+    if (roomUpdateOpen.isOpen) {
+      setRoomUpdateOpen({ isOpen: false, id: "" });
+    } else {
+      setRoomUpdateOpen({ isOpen: true, id: idRoom || "" });
+    }
+  };
 
   const handleRoomFormOpen = (idHotel: string | undefined) => {
-    console.log(roomFormOpen.isOpen);
-
     if (roomFormOpen.isOpen) {
       setRoomFormOpen({ isOpen: false, id: "" });
     } else {
       setRoomFormOpen({ isOpen: true, id: idHotel || "" });
+    }
+  };
+  const handleReservationFormOpen = (idRoom: string | undefined) => {
+    if (reservationFormOpen.isOpen) {
+      setReservationFormOpen({ isOpen: false, id: "" });
+    } else {
+      setReservationFormOpen({ isOpen: true, id: idRoom || "" });
     }
   };
   const handleHotelDetailOpen = (idHotel: string | undefined) => {
@@ -71,6 +95,10 @@ const HandleOpenProvider: FC<HandleOpenProviderProps> = ({ children }) => {
     handleHotelDetailOpen,
     hotelFormOpen,
     handleHotelFormOpen,
+    roomUpdateOpen,
+    handleRoomUpdateOpen,
+    handleReservationFormOpen,
+    reservationFormOpen,
   };
 
   return (

@@ -1,5 +1,4 @@
 import HotelForm from "../HotelForm/HotelForm";
-import HotelSectionHeader from "../HotelSectionHeader/HotelSectionHeader";
 import HotelSectionCards from "../HotelsSectionCards/HotelSectionCards";
 import { useContext } from "react";
 import UpdateHotelForm from "../UpdateHotelForm/UpdateHotelForm";
@@ -16,12 +15,11 @@ const HotelDashboard = () => {
 
   return (
     <div className="flex flex-col">
-      <HotelSectionHeader />
       <HotelSectionCards />
       {context?.hotelFormOpen && <HotelForm />}
       {context?.hotelUpdateOpen.isOpen && <UpdateHotelForm hotel={hotel[0]} />}
-      {context?.roomFormOpen.isOpen && <RoomForm />}
       {context?.hotelDetailOpen.isOpen && <HotelDetail />}
+      {context?.roomFormOpen.isOpen && <RoomForm />}
     </div>
   );
 };

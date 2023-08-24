@@ -11,13 +11,14 @@ import { useAppDispatch } from "./hooks/reduxHooks.ts";
 import Notfound from "./pages/Notfound/Notfound.tsx";
 import { getRooms } from "./redux/slices/room.slice.ts";
 import SignUp from "./pages/SignUp/SignUp.tsx";
-import RoomSectionCards from "./components/RoomsSectionCards/RoomSectionCards.tsx";
 import HotelDashboard from "./components/HotelDashboard/HotelDashboard.tsx";
 import {
   getAuth,
   setLoggedUser,
   setSuccess,
 } from "./redux/slices/auth.slice.ts";
+import RoomDashboard from "./components/RoomDashboard/RoomDashboard.tsx";
+import { loadAllUsers } from "./redux/slices/user.slice.ts";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -50,7 +51,7 @@ function App() {
               },
               {
                 path: "/dashboard/rooms",
-                element: <RoomSectionCards />,
+                element: <RoomDashboard />,
               },
               {
                 path: "/dashboard/reservations",
@@ -85,6 +86,7 @@ function App() {
   useEffect(() => {
     dispatch(gethotels());
     dispatch(getRooms());
+    dispatch(loadAllUsers());
     checkAuth();
   }, []);
   return (
