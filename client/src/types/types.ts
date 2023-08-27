@@ -19,6 +19,8 @@ export type updateRoomFormProps = {
 };
 export type SearchBarProps = {
   handleSearch: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  handleOnSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+  inputSearch: InputSearch;
 };
 export type UserProfileNavBarProps = {
   handleLogout: () => void;
@@ -26,6 +28,12 @@ export type UserProfileNavBarProps = {
 };
 export interface CustomNavLinkProps extends NavLinkProps {
   isActive?: boolean;
+}
+export interface InputSearch {
+  city: string;
+  checkInDate: string;
+  checkOutDate: string;
+  qty: string;
 }
 
 /*----- REDUX ------*/
@@ -37,6 +45,7 @@ export enum UserGender {
   NEUTER = "neuter",
 }
 export type User = {
+  id?: string;
   email: string;
   name: string;
   lastName: string;
@@ -66,7 +75,7 @@ export interface UserInitialState {
 }
 
 //HOTEL
-export type Hotel = {
+export interface Hotel {
   idHotel?: string;
   name?: string;
   address?: string;
@@ -76,10 +85,11 @@ export type Hotel = {
   description?: string;
   rooms?: Room[];
   image?: string;
-};
+}
 
 export interface HotelInitialState {
   hotels: Hotel[];
+  results: Hotel[];
   error: AxiosError | null;
   success: boolean | null;
 }

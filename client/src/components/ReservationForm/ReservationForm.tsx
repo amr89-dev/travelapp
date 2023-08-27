@@ -1,13 +1,40 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { HandleOpenContext } from "../../utils/context";
-import { useAppSelector } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import { Reservation } from "../../types/types";
+import { createReservation } from "../../redux/slices/reservations.slice";
 
 const ReservationForm = () => {
   const context = useContext(HandleOpenContext);
   const idRoom = context?.reservationFormOpen.id;
   const users = useAppSelector((state) => state.userReducer.users);
+  const dispatch = useAppDispatch();
 
-  console.log(users);
+  const initialState = {
+    idRoom: "",
+    checkInDate: "",
+    checkOutDate: "",
+    userId: "",
+  };
+
+  const [formData, setFormData] = useState<Reservation>(initialState);
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+
+    setFormData({
+      ...formData,
+      [name]: value,
+      idRoom: idRoom || "",
+    });
+  };
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(createReservation(formData));
+    setFormData(initialState);
+  };
 
   const formStyles = {
     input:
@@ -19,12 +46,13 @@ const ReservationForm = () => {
 
   return (
     <div className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%]  p-8 bg-white rounded-lg border flex flex-col justify-center items-center">
-      <form>
+      <h2 className="font-bold text-xl">Hacer una reserva</h2>
+      <form onSubmit={handleSubmit}>
         <input
           className={formStyles.input}
           type="hidden"
           name="idRoom"
-          value={idRoom}
+          value={formData.idRoom}
         />
         <label className={formStyles.label} htmlFor="checkInDate">
           Fecha de llegada:
@@ -34,6 +62,10 @@ const ReservationForm = () => {
           type="date"
           id="checkInDate"
           name="checkInDate"
+          onChange={handleChange}
+          value={formData.checkInDate}
+          min={new Date().toISOString().split("T")[0]}
+          max={formData.checkOutDate}
           required
         />
         <label className={formStyles.label} htmlFor="checkOutDate">
@@ -44,14 +76,29 @@ const ReservationForm = () => {
           type="date"
           id="checkOutDate"
           name="checkOutDate"
+          onChange={handleChange}
+          value={formData.checkOutDate}
+          min={formData.checkInDate || new Date().toISOString().split("T")[0]}
           required
         />
-        <select name="users" id="users">
+        <label htmlFor="users">Asignar a un usuario</label>
+        <input
+          type="text"
+          list="users"
+          onChange={handleChange}
+          name="userId"
+          value={formData.userId}
+          required
+        />
+        <datalist id="users" className={formStyles.input}>
           <option disabled>Asignar a un usuario</option>
           {users.map((el) => (
-            <option key={el.email}>{`${el.name} ${el.lastName}`}</option>
+            <option
+              key={el.email}
+              value={el.id}
+            >{`${el.name} ${el.lastName}`}</option>
           ))}
-        </select>
+        </datalist>
 
         <button className={formStyles.button}>Reservar</button>
         <button

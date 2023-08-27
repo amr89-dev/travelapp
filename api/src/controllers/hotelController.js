@@ -1,4 +1,6 @@
+const { Op, literal } = require("sequelize");
 const Hotel = require("../models/Hotel");
+const Reservation = require("../models/Reservation");
 const Room = require("../models/Room");
 
 async function getHotels(req, res) {
@@ -8,6 +10,12 @@ async function getHotels(req, res) {
         {
           model: Room,
           as: "rooms",
+          include: [
+            {
+              model: Reservation,
+              as: "reservations",
+            },
+          ],
         },
       ],
     });
@@ -22,7 +30,6 @@ async function getHotels(req, res) {
 async function getHotelDetail(req, res) {
   try {
     const { id } = req.params;
-    console.log(id);
   } catch (error) {}
 }
 async function createHotel(req, res) {
@@ -99,10 +106,100 @@ async function deleteHotel(req, res) {
     res.status(500).json({ message: "Error interno del servidor" });
   }
 }
+async function getHotelsByParameters(req, res) {
+  try {
+    const { city, checkInDate, checkOutDate } = req.body;
+
+    const conflictingReservations = await Reservation.findAll({
+      where: {
+        [Op.or]: [
+          {
+            [Op.and]: [
+              { checkOutDate: { [Op.gt]: new Date(checkInDate) } },
+              { checkOutDate: { [Op.lt]: new Date(checkOutDate) } },
+            ],
+          },
+          {
+            [Op.and]: [
+              { checkInDate: { [Op.lt]: new Date(checkOutDate) } },
+              { checkInDate: { [Op.gt]: new Date(checkInDate) } },
+            ],
+          },
+          {
+            [Op.and]: [
+              { checkInDate: { [Op.lte]: new Date(checkInDate) } },
+              { checkOutDate: { [Op.gte]: new Date(checkOutDate) } },
+            ],
+          },
+        ],
+      },
+      include: [
+        {
+          model: Room,
+          as: "room",
+          include: [
+            {
+              model: Hotel,
+              as: "hotel",
+            },
+          ],
+        },
+      ],
+    });
+
+    const roomIdsToExclude = conflictingReservations.map((el) => el.roomId);
+    let hotelsWithAvailableRooms = [];
+    if (city) {
+      hotelsWithAvailableRooms = await Hotel.findAll({
+        include: [
+          {
+            model: Room,
+            as: "rooms",
+            where: {
+              idRoom: {
+                [Op.and]: [
+                  { [Op.notIn]: roomIdsToExclude },
+                  { [Op.not]: null },
+                ],
+              },
+            },
+            required: true,
+          },
+        ],
+        where: {
+          city: { [Op.iLike]: city },
+        },
+      });
+    } else {
+      hotelsWithAvailableRooms = await Hotel.findAll({
+        include: [
+          {
+            model: Room,
+            as: "rooms",
+            where: {
+              idRoom: {
+                [Op.and]: [
+                  { [Op.notIn]: roomIdsToExclude },
+                  { [Op.not]: null },
+                ],
+              },
+            },
+            required: true,
+          },
+        ],
+      });
+    }
+
+    res.status(200).json(hotelsWithAvailableRooms);
+  } catch (error) {
+    console.log(error);
+  }
+}
 module.exports = {
   createHotel,
   updateHotel,
   deleteHotel,
   getHotels,
   getHotelDetail,
+  getHotelsByParameters,
 };

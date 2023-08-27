@@ -49,7 +49,10 @@ export const loadReservations = (): AppThunk => {
 export const createReservation = (reservationData: Reservation): AppThunk => {
   return async (dispatch) => {
     try {
-      const reservationToCreate = await axios.post("/hotel", reservationData);
+      const reservationToCreate = await axios.post(
+        "/reservation",
+        reservationData
+      );
       await reservationToCreate.data;
       dispatch(loadReservations());
       dispatch(setSuccess(true));

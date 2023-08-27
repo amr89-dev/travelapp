@@ -1,10 +1,11 @@
 import axios, { AxiosError } from "axios";
 import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk } from "../store";
-import { Hotel, HotelInitialState } from "../../types/types";
+import { Hotel, HotelInitialState, InputSearch } from "../../types/types";
 
 const initialState: HotelInitialState = {
   hotels: [],
+  results: [],
   error: null,
   success: null,
 };
@@ -23,6 +24,12 @@ const hotelSlice = createSlice({
       return {
         ...state,
         hotels: [...state.hotels, action.payload],
+      };
+    },
+    setResult(state, action) {
+      return {
+        ...state,
+        results: action.payload,
       };
     },
     setErrorHotel(state, action) {
@@ -45,6 +52,19 @@ export const gethotels = (): AppThunk => {
       const hotelResponse = await axios.get("/hotel");
       const hotels = await hotelResponse.data;
       dispatch(getHotels(hotels));
+    } catch (error) {
+      const axiosError = error as AxiosError;
+
+      dispatch(setErrorHotel(axiosError.response?.data));
+    }
+  };
+};
+export const gethotelsByParameter = (searchData: InputSearch): AppThunk => {
+  return async (dispatch) => {
+    try {
+      const hotelResponse = await axios.post("/hotel/search", searchData);
+      const hotels = await hotelResponse.data;
+      dispatch(setResult(hotels));
     } catch (error) {
       const axiosError = error as AxiosError;
 
@@ -85,7 +105,7 @@ export const updateHotel = (hotelData: Hotel): AppThunk => {
   };
 };
 
-export const { getHotels, addHotel, setErrorHotel, setSuccess } =
+export const { getHotels, addHotel, setErrorHotel, setSuccess, setResult } =
   hotelSlice.actions;
 
 export default hotelSlice.reducer;

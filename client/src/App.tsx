@@ -19,6 +19,7 @@ import {
 } from "./redux/slices/auth.slice.ts";
 import RoomDashboard from "./components/RoomDashboard/RoomDashboard.tsx";
 import { loadAllUsers } from "./redux/slices/user.slice.ts";
+import ReservationDashboard from "./components/ReservationDashboard/ReservationDashboard.tsx";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -55,11 +56,7 @@ function App() {
               },
               {
                 path: "/dashboard/reservations",
-                element: <></>,
-              },
-              {
-                path: "/dashboard/favorites",
-                element: <></>,
+                element: <ReservationDashboard />,
               },
             ],
           },

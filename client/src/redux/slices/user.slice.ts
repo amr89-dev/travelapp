@@ -18,7 +18,7 @@ const initialState: UserInitialState = {
   },
   users: [],
   error: null,
-  success: null,
+  success: false,
 };
 
 const userSlice = createSlice({
@@ -59,6 +59,7 @@ export const createUser = (userData: User): AppThunk => {
       const userToCreate = await axios.post("/user", userData);
       const userCreated = await userToCreate.data;
       dispatch(addUser(userCreated));
+      dispatch(loadAllUsers());
       dispatch(setSuccess(true));
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -75,7 +76,6 @@ export const loadAllUsers = (): AppThunk => {
       const usersFetch = await axios.get("/user");
       const usersData = await usersFetch.data;
       dispatch(getAllUsers(usersData));
-      dispatch(setSuccess(true));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;

@@ -3,6 +3,7 @@ const {
   updateHotel,
   deleteHotel,
   getHotels,
+  getHotelsByParameters,
 } = require("../controllers/hotelController");
 
 const hotelRoutes = require("express").Router();
@@ -13,13 +14,14 @@ hotelRoutes.get("/", (req, res) => {
 hotelRoutes.post("/", (req, res) => {
   createHotel(req, res);
 });
-hotelRoutes.get("/:id", (req, res) => {
-  getHotelDetail(req, res);
+hotelRoutes.post("/search", (req, res) => {
+  getHotelsByParameters(req, res);
 });
-hotelRoutes.put("/:id", (req, res) => {
+
+hotelRoutes.put("/", (req, res) => {
   updateHotel(req, res);
 });
-hotelRoutes.delete("/:id", (req, res) => {
+hotelRoutes.delete("/", (req, res) => {
   deleteHotel(req, res);
 });
 

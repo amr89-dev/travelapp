@@ -5,8 +5,8 @@ import { createRoom } from "../../redux/slices/room.slice";
 import { HandleOpenContext } from "../../utils/context";
 
 const RoomForm = () => {
-  const dispatch = useAppDispatch();
   const context = useContext(HandleOpenContext);
+  const dispatch = useAppDispatch();
 
   const initialState = {
     idHotel: context?.roomFormOpen.id,
@@ -78,6 +78,7 @@ const RoomForm = () => {
               onChange={handleChange}
               value={formData.roomType}
             >
+              <option disabled>Selecciona el tipo de habitación</option>
               <option value="sigle">sencilla</option>
               <option value="double">doble</option>
               <option value="triple">triple</option>
