@@ -89,13 +89,10 @@ export const createHotel = (hotelData: Hotel): AppThunk => {
 export const updateHotel = (hotelData: Hotel): AppThunk => {
   return async (dispatch) => {
     try {
-      const hotelToUpdate = await axios.put(
-        `/hotel/${hotelData.idHotel}`,
-        hotelData
-      );
+      const hotelToUpdate = await axios.put(`/hotel`, hotelData);
       const hotelCreated = await hotelToUpdate.data;
       dispatch(addHotel(hotelCreated));
-      dispatch(setSuccess(false));
+      dispatch(setSuccess(true));
       dispatch(gethotels());
     } catch (err) {
       const axiosError = err as AxiosError;

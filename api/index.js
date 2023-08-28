@@ -9,14 +9,14 @@ const PORT = process.env.PORT || 3001;
 const main = async () => {
   try {
     await database.authenticate();
+    await database.sync({ force: false });
     console.log("La conexion a la base de datos es exitosa");
 
-    await loadHotels();
-    await loadUsers();
     server.listen(PORT, (req, res) => {
       console.log(`server raised in port ${PORT}`);
-      database.sync({ force: false });
     });
+    await loadHotels();
+    await loadUsers();
   } catch (error) {
     console.log("-->", error);
   }

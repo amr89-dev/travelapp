@@ -1,12 +1,34 @@
 import { useState } from "react";
-import { SearchBarProps } from "../../types/types";
+import { InputSearch } from "../../types/types";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { gethotelsByParameter } from "../../redux/slices/hotel.slice";
 
-const SearchBar = ({
-  handleSearch,
-  inputSearch,
-  handleOnSubmit,
-}: SearchBarProps) => {
-  const { checkInDate, checkOutDate } = inputSearch;
+const SearchBar = () => {
+  const [inputSearch, setinputSearch] = useState<InputSearch>({
+    city: "",
+    checkInDate: "",
+    checkOutDate: "",
+    qty: "",
+  });
+  const dispatch = useAppDispatch();
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setinputSearch({
+      ...inputSearch,
+      [name]: value,
+    });
+  };
+  const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(gethotelsByParameter(inputSearch));
+    setinputSearch({
+      city: "",
+      checkInDate: "",
+      checkOutDate: "",
+      qty: "",
+    });
+  };
 
   const [openCalendar, setOpenCalendar] = useState({
     entrada: false,
@@ -31,8 +53,6 @@ const SearchBar = ({
   };
 
   const handleBlurCalendar = () => {
-    console.log("estoy en blur");
-
     setOpenCalendar({
       ...openCalendar,
       entrada: false,
@@ -50,6 +70,7 @@ const SearchBar = ({
         type="search"
         placeholder="Busca un destino"
         name="city"
+        value={inputSearch.city}
         onChange={handleSearch}
       />
       <div className="relative col-span-2">
@@ -60,10 +81,11 @@ const SearchBar = ({
             handleOpenCalendar(e);
           }}
           className={`py-3 px-3 w-full  shadow appearance-none border rounded  leading-tight focus:outline-none focus:shadow-outline ${
-            checkInDate ? "text-gray-700" : "text-gray-400"
+            inputSearch.checkInDate ? "text-gray-700" : "text-gray-400"
           } `}
         >
-          {checkInDate.split("-").reverse().join("-") || "Fecha Llegada"}
+          {inputSearch.checkInDate.split("-").reverse().join("-") ||
+            "Fecha Llegada"}
         </button>
         {openCalendar.entrada && (
           <input
@@ -85,10 +107,11 @@ const SearchBar = ({
             handleOpenCalendar(e);
           }}
           className={`py-3 px-3 w-full  shadow appearance-none border rounded  leading-tight focus:outline-none focus:shadow-outline ${
-            checkOutDate ? "text-gray-700" : "text-gray-400"
+            inputSearch.checkOutDate ? "text-gray-700" : "text-gray-400"
           } `}
         >
-          {checkOutDate.split("-").reverse().join("-") || "Fecha Salida"}
+          {inputSearch.checkOutDate.split("-").reverse().join("-") ||
+            "Fecha Salida"}
         </button>
         {openCalendar.salida && (
           <input
@@ -109,6 +132,7 @@ const SearchBar = ({
         name="qty"
         id="passagers"
         placeholder="Cantidad de huespedes"
+        value={inputSearch.qty}
         onChange={handleSearch}
       />
 

@@ -1,9 +1,13 @@
 import { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { UserProfileNavBarProps } from "../../types/types";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { getAuth, setLoggedUser } from "../../redux/slices/auth.slice";
 
 /*eslint-disable */
-const UserProfile = ({ handleLogout, profile }: UserProfileNavBarProps) => {
+const UserProfile = ({ profile }: UserProfileNavBarProps) => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation().pathname;
   const profilePhoto = "https://source.unsplash.com/random/800x600/?avatar=1";
@@ -12,6 +16,19 @@ const UserProfile = ({ handleLogout, profile }: UserProfileNavBarProps) => {
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
+  };
+  const handleLogOut = () => {
+    localStorage.removeItem("userLogged");
+    dispatch(getAuth(false));
+    dispatch(
+      setLoggedUser({
+        email: "",
+        password: "",
+        id: "",
+        role: "",
+      })
+    );
+    navigate("/");
   };
 
   useEffect(() => {
@@ -50,7 +67,12 @@ const UserProfile = ({ handleLogout, profile }: UserProfileNavBarProps) => {
         </NavLink>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">
           <li className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">
-            <button type="button" onClick={handleLogout}>
+            <button
+              type="button"
+              onClick={() => {
+                handleLogOut();
+              }}
+            >
               Cerrar Sesión
             </button>
           </li>

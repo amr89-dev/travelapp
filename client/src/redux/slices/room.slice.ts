@@ -26,10 +26,10 @@ const roomSlice = createSlice({
         rooms: [...state.rooms, action.payload],
       };
     },
-    setIsLoading(state, action) {
+    setSucces(state, action) {
       return {
         ...state,
-        isLoading: action.payload,
+        success: action.payload,
       };
     },
     setErrorRoom(state, action) {
@@ -57,13 +57,12 @@ export const getRooms = (): AppThunk => {
 export const createRoom = (roomData: Room): AppThunk => {
   return async (dispatch) => {
     try {
-      dispatch(setIsLoading(true));
       const hotelToCreate = await axios.post("/room", roomData);
       const hotelCreated = await hotelToCreate.data;
       dispatch(addRooms(hotelCreated));
       dispatch(gethotels());
       dispatch(getRooms());
-      dispatch(setIsLoading(false));
+      dispatch(setSucces(true));
     } catch (err) {
       const axiosError = err as AxiosError;
       console.log(axiosError);
@@ -74,7 +73,6 @@ export const createRoom = (roomData: Room): AppThunk => {
 export const updateRoom = (roomData: Room): AppThunk => {
   return async (dispatch) => {
     try {
-      dispatch(setIsLoading(true));
       const roomToUpdate = await axios.put(
         `/room/${roomData.idRoom}`,
         roomData
@@ -82,7 +80,7 @@ export const updateRoom = (roomData: Room): AppThunk => {
       const roomUpdated = await roomToUpdate.data;
       dispatch(addRooms(roomUpdated));
       dispatch(getRooms());
-      dispatch(setIsLoading(false));
+      dispatch(setSucces(true));
     } catch (err) {
       const axiosError = err as AxiosError;
       console.log(axiosError);
@@ -91,6 +89,6 @@ export const updateRoom = (roomData: Room): AppThunk => {
   };
 };
 
-export const { setRooms, addRooms, setIsLoading, setErrorRoom } =
+export const { setRooms, addRooms, setSucces, setErrorRoom } =
   roomSlice.actions;
 export default roomSlice.reducer;

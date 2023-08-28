@@ -45,21 +45,15 @@ const UpdateHotelForm = ({ hotel }: updateHotelFormProps) => {
   };
 
   return (
-    <section className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] min-h-screen  p-8 bg-white rounded-lg border">
-      <h2 className="font-bold text-2xl">Actualizar Información del Hotel</h2>
-      <button
-        className={formStyles.button}
-        onClick={() => {
-          context?.handleHotelUpdateOpen(undefined);
-        }}
-      >
-        cerrar
-      </button>
+    <section className="fixed inset-0 min-h-screen p-8   flex flex-col items-center justify-center bg-white rounded-lg border">
       <form
-        className=" flex flex-col items-center justify-center w-screen"
+        className=" flex flex-col items-center justify-center w-full"
         onSubmit={handleSubmit}
       >
-        <div className=" shadow-2xl rounded-lg   sm:w-1/2 flex flex-col p-4 gap-3">
+        <h2 className="font-bold text-gray-700  text-2xl mt-4">
+          Actualizar Información del Hotel
+        </h2>
+        <div className="  shadow-2xl rounded-lg  w-[50%] flex flex-col p-4 gap-3 mb-3">
           <div>
             <label htmlFor="name" className={formStyles.label}>
               Nombre del hotel:
@@ -88,74 +82,90 @@ const UpdateHotelForm = ({ hotel }: updateHotelFormProps) => {
               placeholder="Ingrese la dirección del hotel"
             />
           </div>
-          <div>
-            <label htmlFor="country" className={formStyles.label}>
-              Pais del hotel:
-            </label>
-            <input
-              type="text"
-              name="country"
-              className={formStyles.input}
-              id="country"
-              onChange={handleChange}
-              value={formData.country}
-              placeholder="Ingrese el pais del hotel"
-            />
-          </div>
-          <div>
-            <label htmlFor="city" className={formStyles.label}>
-              Ciudad del hotel:
-            </label>
-            <input
-              type="text"
-              name="city"
-              className={formStyles.input}
-              id="city"
-              onChange={handleChange}
-              value={formData.city}
-              placeholder="Ingrese la ciudad del hotel"
-            />
-          </div>
-          <div>
-            <label htmlFor="description" className={formStyles.label}>
-              Descripcion del hotel:
-            </label>
-            <textarea
-              className={formStyles.textArea}
-              name="description"
-              id="description"
-              onChange={handleChange}
-              value={formData.description}
-            />
-          </div>
-          <div>
-            <label htmlFor="available" className={formStyles.label}>
-              Disponibilidad:
-            </label>
-            <label>
+          <div className="flex flex-row items-center gap-2">
+            <div className="w-full">
+              <label htmlFor="city" className={formStyles.label}>
+                Ciudad del hotel:
+              </label>
               <input
-                type="radio"
-                name="available"
-                value={"true"}
+                type="text"
+                name="city"
+                className={formStyles.input}
+                id="city"
                 onChange={handleChange}
-                defaultChecked
+                value={formData.city}
+                placeholder="Ingrese la ciudad del hotel"
               />
-              disponible
-            </label>
-            <label>
+            </div>
+            <div className="w-full">
+              <label htmlFor="country" className={formStyles.label}>
+                Pais del hotel:
+              </label>
               <input
-                type="radio"
-                name="available"
-                value={"false"}
+                type="text"
+                name="country"
+                className={formStyles.input}
+                id="country"
                 onChange={handleChange}
+                value={formData.country}
+                placeholder="Ingrese el pais del hotel"
               />
-              No disponible
-            </label>
+            </div>
+          </div>
+          <div className="flex flex-row items-center gap-2">
+            <div className="w-[70%]">
+              <label htmlFor="description" className={formStyles.label}>
+                Descripcion del hotel:
+              </label>
+              <textarea
+                className={formStyles.textArea}
+                name="description"
+                id="description"
+                onChange={handleChange}
+                value={formData.description}
+              />
+            </div>
+            <div className="flex flex-col w-[30%]">
+              <label htmlFor="available" className={formStyles.label}>
+                Disponibilidad:
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="available"
+                  value={"true"}
+                  onChange={handleChange}
+                  defaultChecked
+                  className="mr-3"
+                />
+                Disponible
+              </label>
+              <label>
+                <input
+                  type="radio"
+                  name="available"
+                  value={"false"}
+                  onChange={handleChange}
+                  className="mr-3"
+                />
+                No disponible
+              </label>
+            </div>
           </div>
         </div>
-        <button className={formStyles.button} type="submit">
-          Actualizar
-        </button>
+        <div className="flex flex-row gap-2 justify-center">
+          <button className={formStyles.button} type="submit">
+            Actualizar
+          </button>
+          <button
+            className={formStyles.button}
+            onClick={() => {
+              context?.handleHotelUpdateOpen(undefined);
+            }}
+          >
+            cerrar
+          </button>
+        </div>
       </form>
     </section>
   );

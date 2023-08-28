@@ -7,16 +7,13 @@ const HotelRoomInformation = ({ rooms }: hotelInformationProps) => {
   const reservations = useAppSelector(
     (state) => state.reservationReducer.reservations
   );
-  console.log(reservations);
 
   return (
-    <section className="flex flex-col items-center border">
-      <h2 className="font-bold text-xl ">Información de las habitaciones</h2>
-
+    <section className="flex flex-col items-center ">
       <aside className=" w-full min-h-full grid grid-cols-2 gap-5">
         <div className="flex flex-col gap-5 items-center min-h-full py-3">
           <figure>
-            <img src={chenckIcon} alt="world" />
+            <img src={chenckIcon} alt="world" className="max-w-[48px]" />
           </figure>
           <div className="flex flex-col items-center">
             <h3 className="font-bold text-center mb-1">
@@ -30,7 +27,7 @@ const HotelRoomInformation = ({ rooms }: hotelInformationProps) => {
         </div>
         <div className="flex flex-col gap-5 items-center min-h-full py-3">
           <figure>
-            <img src={bedIcon} alt="world" />
+            <img src={bedIcon} alt="world" className="max-w-[48px]" />
           </figure>
           <div className="flex flex-col items-center">
             <h3 className="font-bold text-center mb-1">
@@ -39,7 +36,7 @@ const HotelRoomInformation = ({ rooms }: hotelInformationProps) => {
             <h5 className=" text-gray-600 text-sm text-center">Total</h5>
           </div>
           <p className=" font-bold text-4xl text-center">
-            {rooms?.length ?? "name"}
+            {reservations?.length ?? "name"}
           </p>
         </div>
       </aside>

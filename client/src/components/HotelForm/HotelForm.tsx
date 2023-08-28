@@ -74,15 +74,15 @@ const HotelForm = () => {
   }
 
   return (
-    <article className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[90%] min-h-screen  p-8 bg-white rounded-lg border">
+    <article className="fixed inset-0 min-h-screen p-8   flex flex-col items-center justify-center bg-white rounded-lg border">
       <form
-        className=" flex flex-col items-center justify-center"
+        className="  flex flex-col items-center justify-center w-full"
         onSubmit={handleSubmit}
       >
         <h2 className="font-bold text-gray-700  text-2xl m-4 ">
           Crea un nuevo hotel
         </h2>
-        <div className=" shadow-2xl rounded-lg   sm:w-1/2 flex flex-col p-4 gap-3">
+        <div className=" shadow-2xl rounded-lg  w-[50%] flex flex-col p-4 gap-3 mb-3">
           <div>
             <label htmlFor="name" className={formStyles.label}>
               Nombre del hotel:
@@ -112,33 +112,35 @@ const HotelForm = () => {
             />
           </div>
 
-          <div>
-            <label htmlFor="city" className={formStyles.label}>
-              Ciudad:
-            </label>
-            <input
-              type="text"
-              name="city"
-              className={formStyles.input}
-              id="city"
-              onChange={handleChange}
-              value={formData.city}
-              placeholder="Ingrese la ciudad del hotel"
-            />
-          </div>
-          <div>
-            <label htmlFor="country" className={formStyles.label}>
-              Pais:
-            </label>
-            <input
-              type="text"
-              name="country"
-              className={formStyles.input}
-              id="country"
-              onChange={handleChange}
-              value={formData.country}
-              placeholder="Ingrese el pais del hotel"
-            />
+          <div className="flex flex-row items-center gap-2">
+            <div className="w-full">
+              <label htmlFor="city" className={formStyles.label}>
+                Ciudad:
+              </label>
+              <input
+                type="text"
+                name="city"
+                className={formStyles.input}
+                id="city"
+                onChange={handleChange}
+                value={formData.city}
+                placeholder="Ingrese la ciudad del hotel"
+              />
+            </div>
+            <div className="w-full">
+              <label htmlFor="country" className={formStyles.label}>
+                Pais:
+              </label>
+              <input
+                type="text"
+                name="country"
+                className={formStyles.input}
+                id="country"
+                onChange={handleChange}
+                value={formData.country}
+                placeholder="Ingrese el pais del hotel"
+              />
+            </div>
           </div>
           <div>
             <label htmlFor="description" className={formStyles.label}>
@@ -153,7 +155,7 @@ const HotelForm = () => {
             />
           </div>
         </div>
-        <div className=" flex flex-row justify-between">
+        <div className="flex flex-row gap-2 justify-center">
           <button className={formStyles.button} type="submit">
             Registrar
           </button>

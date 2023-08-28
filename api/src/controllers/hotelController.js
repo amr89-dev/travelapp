@@ -1,4 +1,4 @@
-const { Op, literal } = require("sequelize");
+const { Op, literal, fn, col } = require("sequelize");
 const Hotel = require("../models/Hotel");
 const Reservation = require("../models/Reservation");
 const Room = require("../models/Room");
@@ -65,10 +65,10 @@ async function createHotel(req, res) {
 
 async function updateHotel(req, res) {
   try {
-    const { id } = req.params;
-    const { name, address, city, country, description } = req.body;
+    const { name, address, city, country, description, favorite, idHotel } =
+      req.body;
 
-    const hotelToUpdate = await Hotel.findByPk(id);
+    const hotelToUpdate = await Hotel.findByPk(idHotel);
 
     if (!hotelToUpdate) {
       return res.status(404).json({ message: "Hotel no encontrado" });
@@ -79,13 +79,14 @@ async function updateHotel(req, res) {
     hotelToUpdate.city = city ?? hotelToUpdate.city;
     hotelToUpdate.country = country ?? hotelToUpdate.country;
     hotelToUpdate.description = description ?? hotelToUpdate.description;
+    hotelToUpdate.favorite = favorite ?? hotelToUpdate.favorite;
 
     await hotelToUpdate.save();
 
     res.status(200).json(hotelToUpdate);
   } catch (error) {
     console.error("Error al actualizar el hotel:", error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Error al actualizar el hotel" });
   }
 }
 
@@ -108,7 +109,38 @@ async function deleteHotel(req, res) {
 }
 async function getHotelsByParameters(req, res) {
   try {
-    const { city, checkInDate, checkOutDate } = req.body;
+    const { city, checkInDate, checkOutDate, numberOfGuests } = req.body;
+    if (!checkInDate || !checkOutDate) {
+      return res.status(401).json({ message: "Las fechas son requeridas" });
+    }
+
+    let roomsInCityWithTotalCapacity = [];
+    if (city) {
+      roomsInCityWithTotalCapacity = await Room.findAll({
+        attributes: [[fn("SUM", col("roomCapacity")), "totalCapacity"]],
+        include: {
+          model: Hotel,
+          as: "hotel",
+          where: {
+            city: { [Op.iLike]: city },
+          },
+        },
+        group: ["hotel.idHotel"],
+      });
+    } else {
+      roomsInCityWithTotalCapacity = await Room.findAll({
+        attributes: [[fn("SUM", col("roomCapacity")), "totalCapacity"]],
+        include: {
+          model: Hotel,
+          as: "hotel",
+        },
+        group: ["hotel.idHotel"],
+      });
+    }
+
+    const hotelsWithEnoughCapacity = roomsInCityWithTotalCapacity
+      .filter((hotel) => hotel.dataValues.totalCapacity >= numberOfGuests)
+      .map((hotel) => hotel.hotel.idHotel);
 
     const conflictingReservations = await Reservation.findAll({
       where: {
@@ -148,6 +180,7 @@ async function getHotelsByParameters(req, res) {
     });
 
     const roomIdsToExclude = conflictingReservations.map((el) => el.roomId);
+
     let hotelsWithAvailableRooms = [];
     if (city) {
       hotelsWithAvailableRooms = await Hotel.findAll({
@@ -168,6 +201,7 @@ async function getHotelsByParameters(req, res) {
         ],
         where: {
           city: { [Op.iLike]: city },
+          idHotel: { [Op.in]: hotelsWithEnoughCapacity },
         },
       });
     } else {
@@ -180,6 +214,7 @@ async function getHotelsByParameters(req, res) {
               idRoom: {
                 [Op.and]: [
                   { [Op.notIn]: roomIdsToExclude },
+
                   { [Op.not]: null },
                 ],
               },
@@ -187,6 +222,9 @@ async function getHotelsByParameters(req, res) {
             required: true,
           },
         ],
+        where: {
+          idHotel: { [Op.in]: hotelsWithEnoughCapacity },
+        },
       });
     }
 

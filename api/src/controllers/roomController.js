@@ -5,29 +5,41 @@ const Room = require("../models/Room");
 
 async function createRooms(req, res) {
   try {
-    const { idHotel, numRooms, roomType, roomPrice, roomLocation, available } =
-      req.body;
-    console.log({
+    const {
       idHotel,
       numRooms,
       roomType,
       roomPrice,
+      roomTaxes,
       roomLocation,
       available,
-    });
+    } = req.body;
+
+    const roomTypes = {
+      Sencilla: 1,
+      Doble: 2,
+      Triple: 3,
+      Suite: 4,
+    };
+
     const hotel = await Hotel.findByPk(idHotel);
 
     if (!hotel) {
       return res.status(404).json({ message: "Hotel no encontrado" });
     }
 
+    const percent = Number(roomTaxes) / 100;
+    const taxes = Number(roomPrice) * percent;
+
     const roomsToCreate = [];
 
     for (let i = 1; i <= numRooms; i++) {
       roomsToCreate.push({
         roomType,
+        roomCapacity: roomTypes[roomType],
         roomPrice: Number(roomPrice),
-        roomLocation,
+        roomTaxes: Number(roomTaxes),
+        netIncome: Number(roomPrice) - taxes,
         available,
         hotelId: idHotel,
       });

@@ -20,6 +20,7 @@ import {
 import RoomDashboard from "./components/RoomDashboard/RoomDashboard.tsx";
 import { loadAllUsers } from "./redux/slices/user.slice.ts";
 import ReservationDashboard from "./components/ReservationDashboard/ReservationDashboard.tsx";
+import AvailableRooms from "./components/AvailableRooms/AvailableRooms.tsx";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -28,6 +29,10 @@ function App() {
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/availablerooms/:id",
+        element: <AvailableRooms />,
       },
 
       {
@@ -87,7 +92,7 @@ function App() {
     checkAuth();
   }, []);
   return (
-    <div className="relative">
+    <div className="">
       <NavBar />
       <AppRouter />
     </div>

@@ -1,22 +1,42 @@
 import { useContext } from "react";
 import { HotelCardProps } from "../../types/types";
 import { HandleOpenContext } from "../../utils/context";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { updateHotel } from "../../redux/slices/hotel.slice";
 
-const HotelRow = ({ hotelData }: HotelCardProps) => {
+const HotelRow = ({ hotelData, index }: HotelCardProps) => {
   const context = useContext(HandleOpenContext);
+  const dispatch = useAppDispatch();
 
-  const { name, city, country, idHotel } = hotelData;
-  const styles = {
-    button: "border rounded-lg ",
+  const { name, city, country, idHotel, favorite } = hotelData;
+  const handleFavorite = (idHotel: string | undefined) => {
+    if (favorite) {
+      dispatch(updateHotel({ favorite: false, idHotel }));
+    } else {
+      dispatch(updateHotel({ favorite: true, idHotel }));
+    }
   };
+
   return (
     <>
-      <tr className="rounded-lg hover:bg-blue-300 hover:text-white ">
-        <td className="rounded-lg">{name}</td>
-        <td className="rounded-lg">{`${city}, ${country}`}</td>
+      <tr
+        className={`${
+          index ? (index % 2 === 0 ? "bg-white" : "bg-gray-100") : 0
+        } text-gray-900 gap-2 group hover:bg-blue-600 hover:text-white `}
+      >
+        <td
+          onClick={() => {
+            handleFavorite(idHotel);
+          }}
+        >
+          {favorite ? "favorito" : "no"}
+        </td>
+        <td className="">{name}</td>
+        <td className="">{city}</td>
+        <td className="">{country}</td>
         <td className="grid grid-cols-3 gap-2 ">
           <button
-            className={styles.button}
+            className="border border-black group-hover:border-white rounded-lg p-1"
             onClick={() => {
               context?.handleHotelDetailOpen(idHotel);
             }}
@@ -24,7 +44,7 @@ const HotelRow = ({ hotelData }: HotelCardProps) => {
             Ver
           </button>
           <button
-            className={styles.button}
+            className="border border-black group-hover:border-white rounded-lg p-1"
             onClick={() => {
               context?.handleHotelUpdateOpen(idHotel);
             }}
@@ -32,7 +52,7 @@ const HotelRow = ({ hotelData }: HotelCardProps) => {
             Editar
           </button>
           <button
-            className={styles.button}
+            className="border border-black group-hover:border-white rounded-lg p-1"
             onClick={() => {
               context?.handleRoomFormOpen(idHotel);
             }}

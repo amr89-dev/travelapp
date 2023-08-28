@@ -27,10 +27,8 @@ const NavBar = () => {
     pending: "mx-2",
   }; */
 
-  const handleLogout = () => {};
-
   return (
-    <div className="bg-blue-700  text-white min-w-screen-lg shadow-lg  w-screen sticky top-0">
+    <div className="bg-blue-700  text-white  shadow-lg z-10 w-screen sticky top-0">
       <nav
         className={` max-w-screen-xl flex flex-row items-center mx-auto p-2 justify-between h-16 `}
       >
@@ -121,7 +119,7 @@ const NavBar = () => {
 
               <li>
                 {/* <Link to="/dashboard">👤</Link> */}
-                <UserProfile handleLogout={handleLogout} profile={profile} />
+                <UserProfile profile={profile} />
               </li>
             </ul>
           )}

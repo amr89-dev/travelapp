@@ -14,7 +14,7 @@ const HotelDashboard = () => {
   );
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <HotelSectionCards />
       {context?.hotelFormOpen && <HotelForm />}
       {context?.hotelUpdateOpen.isOpen && <UpdateHotelForm hotel={hotel[0]} />}

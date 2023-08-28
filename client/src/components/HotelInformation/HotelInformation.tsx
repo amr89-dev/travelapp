@@ -6,42 +6,40 @@ import { hotelInformationProps } from "../../types/types";
 
 const HotelInformation = ({ hotel }: hotelInformationProps) => {
   return (
-    <section className="flex flex-col items-center border">
-      <h2 className="font-bold text-xl ">Información del Hotel</h2>
-
-      <aside className=" w-full min-h-full flex flex-col ">
+    <section className="flex flex-col items-center p-2 ">
+      <aside className=" w-full min-h-full flex flex-col gap-3 ">
         <div className="flex flex-row  items-center  ">
           <figure>
-            <img src={worldIcon} alt="world" />
+            <img className="max-w-[48px] mr-4" src={worldIcon} alt="world" />
           </figure>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-start w-full">
             <h3 className="font-light">Nombre</h3>
-            <p className=" font-bold text-xl text-center">
-              {hotel?.name ?? "name"}
-            </p>
+            <p className=" font-bold text-xl">{hotel?.name ?? "name"}</p>
           </div>
         </div>
 
         <div className="flex flex-row items-center  ">
           <figure>
-            <img src={addressIcon} alt="address" />
+            <img
+              className="max-w-[48px] mr-4"
+              src={addressIcon}
+              alt="address"
+            />
           </figure>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-start w-full">
             <h3 className="font-light">Dirección</h3>
-            <p className=" font-bold text-xl text-center">
-              {hotel?.address || "address"}
-            </p>
+            <p className=" font-bold text-xl">{hotel?.address || "address"}</p>
           </div>
         </div>
 
         <div className="flex flex-row  items-center ">
           <figure>
-            <img src={cityIcon} alt="world" />
+            <img className="max-w-[48px] mr-4" src={cityIcon} alt="world" />
           </figure>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-start w-full">
             <h3 className="font-light">Ciudad</h3>
             <div className="flex flex-row">
-              <p className="font-bold text-xl text-center">
+              <p className="font-bold text-xl">
                 {hotel?.city || "city"}, {hotel?.country || "country"}
               </p>
             </div>
@@ -50,14 +48,19 @@ const HotelInformation = ({ hotel }: hotelInformationProps) => {
 
         <div className="flex flex-row  items-center">
           <figure>
-            <img src={descriptionIcon} alt="world" />
+            <img
+              className="max-w-[48px] mr-4"
+              src={descriptionIcon}
+              alt="world"
+            />
           </figure>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-start w-full">
             <h3 className="font-light">Descripción</h3>
-
-            <p className=" font-bold text-xl text-center">
-              {hotel?.description || "name"}
-            </p>
+            <div className="flex flex-row">
+              <p className="font-bold text-xl">
+                {hotel.description || "description"}
+              </p>
+            </div>
           </div>
         </div>
       </aside>

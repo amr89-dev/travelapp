@@ -14,7 +14,12 @@ const HotelDetail = () => {
   );
 
   return (
-    <div className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[100%] h-max  p-8 bg-white rounded-lg border  ">
+    <div className="fixed inset-0 min-h-screen  p-8 bg-white rounded-lg border flex flex-col items-center justify-center ">
+      <h2 className="font-bold text-3xl mb-4">Información del hotel</h2>
+      <div className="grid grid-cols-2 items-start mb-3 shadow-lg p-8">
+        <HotelInformation hotel={hotel[0]} />
+        <HotelRoomInformation hotel={hotel[0]} rooms={rooms} />
+      </div>
       <button
         onClick={() => {
           context?.handleHotelDetailOpen(undefined);
@@ -23,10 +28,6 @@ const HotelDetail = () => {
       >
         Cerrar
       </button>
-      <div className="grid grid-cols-2 items-start">
-        <HotelInformation hotel={hotel[0]} />
-        <HotelRoomInformation hotel={hotel[0]} rooms={rooms} />
-      </div>
     </div>
   );
 };

@@ -60,8 +60,6 @@ export const loginUser = (userData: UserLogin): AppThunk => {
   };
 };
 
-
-
 export const { getAuth, setSuccess, setError, setLoggedUser } =
   authSlice.actions;
 

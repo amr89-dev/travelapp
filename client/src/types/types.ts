@@ -23,7 +23,6 @@ export type SearchBarProps = {
   inputSearch: InputSearch;
 };
 export type UserProfileNavBarProps = {
-  handleLogout: () => void;
   profile: UserLogin;
 };
 export interface CustomNavLinkProps extends NavLinkProps {
@@ -34,6 +33,12 @@ export interface InputSearch {
   checkInDate: string;
   checkOutDate: string;
   qty: string;
+}
+export enum SortBy {
+  NONE = "none",
+  NAME = "name",
+  CITY = "city",
+  COUNTRY = "country",
 }
 
 /*----- REDUX ------*/
@@ -85,6 +90,7 @@ export interface Hotel {
   description?: string;
   rooms?: Room[];
   image?: string;
+  favorite?: boolean;
 }
 
 export interface HotelInitialState {
@@ -96,6 +102,7 @@ export interface HotelInitialState {
 
 export interface HotelCardProps {
   hotelData: Hotel;
+  index?: number;
 }
 //ROOM
 export type Room = {
@@ -103,6 +110,7 @@ export type Room = {
   numRooms?: number;
   roomType?: string;
   roomPrice?: string;
+  roomTaxes?: string;
   roomLocation?: string;
   available?: boolean;
   hotelId?: string;

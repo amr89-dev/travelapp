@@ -16,9 +16,20 @@ const Room = database.define(
       type: DataTypes.STRING,
       defaultValue: "sencilla",
     },
+    roomCapacity: {
+      type: DataTypes.INTEGER,
+      defaultValue: 1,
+    },
     roomPrice: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
+    },
+    roomTaxes: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+    },
+    netIncome: {
+      type: DataTypes.INTEGER,
     },
     roomLocation: {
       type: DataTypes.STRING,

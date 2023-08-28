@@ -37,6 +37,10 @@ const Hotel = database.define(
     image: {
       type: DataTypes.STRING,
     },
+    favorite: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     timestamps: false,
