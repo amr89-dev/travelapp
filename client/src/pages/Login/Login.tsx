@@ -65,9 +65,9 @@ const Login = () => {
 
   return (
     <Layout>
-      <h2>Iniciar Sesion</h2>
+      <h2 className="font-bold text-2xl m-4">Iniciar Sesion</h2>
       <form
-        className=" flex flex-col items-center justify-center w-screen"
+        className=" flex flex-col items-center justify-center w-[70%]"
         onSubmit={handleSubmit}
       >
         <div className=" shadow-2xl rounded-lg   sm:w-1/2 flex flex-col p-4 gap-3">

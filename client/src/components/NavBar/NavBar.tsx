@@ -89,9 +89,9 @@ const NavBar = () => {
             </NavLink>
           ))}
         </ul> */}
-        <ul className="flex flex-row gap-1 items-center">
+        <ul className="flex flex-row gap-1 items-center ">
           {!isAuth ? (
-            <div>
+            <div className="w-[250px] flex flex-row justify-around">
               {location !== "signup" && (
                 <Link to="signup">
                   <button className="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-3 border border-white hover:border-transparent rounded">

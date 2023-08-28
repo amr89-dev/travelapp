@@ -25,13 +25,6 @@ const SideBar = () => {
         >
           📅 <p className=" leading-5 font-medium">Reservas</p>
         </NavLink>
-        <NavLink
-          to="/dashboard/favorites"
-          id="favs"
-          className="flex py-4 px-5 justify-start items-center gap-3 self-stretch hover:bg-blue-700 hover:text-white"
-        >
-          ⭐<p className=" leading-5 font-medium">Favoritos</p>
-        </NavLink>
       </nav>
     </section>
   );

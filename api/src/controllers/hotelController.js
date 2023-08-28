@@ -52,6 +52,7 @@ async function createHotel(req, res) {
       city,
       country,
       description,
+      image: "https://source.unsplash.com/random/800x600/?hotel",
     });
 
     return res.status(200).json({

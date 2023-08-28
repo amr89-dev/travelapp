@@ -8,7 +8,8 @@ const HotelSectionCards = () => {
   const hotels = useAppSelector((state) => state.hotelReducer.hotels);
   const context = useContext(HandleOpenContext);
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE);
-  const [filterCountry, setFilterCountry] = useState<string | null>(null);
+  const [filterCity, setFilterCity] = useState<string | null>(null);
+  const [filterFavorite, setFilterFavorite] = useState(false);
 
   const toggleSortByCountry = () => {
     const newSortingValue =
@@ -18,16 +19,24 @@ const HotelSectionCards = () => {
   const handleChangeSort = (sort: SortBy) => {
     setSorting(sort);
   };
+  const handleFavorite = () => {
+    setFilterFavorite(!filterFavorite);
+  };
 
   const filteredHotels = useMemo(() => {
-    return filterCountry != null && filterCountry.length > 0
+    return filterCity != null && filterCity.length > 0
       ? hotels.filter((hotel) => {
-          return hotel.country
-            ? hotel.country.toLowerCase().includes(filterCountry.toLowerCase())
+          return hotel.city && filterFavorite
+            ? hotel.city.toLowerCase().includes(filterCity.toLowerCase()) &&
+                hotel.favorite
+            : hotel.city
+            ? hotel.city.toLowerCase().includes(filterCity.toLowerCase())
             : [];
         })
+      : filterFavorite
+      ? hotels.filter((hotel) => hotel.favorite)
       : hotels;
-  }, [hotels, filterCountry]);
+  }, [hotels, filterCity, filterFavorite]);
 
   const sortedHotels = useMemo(() => {
     if (sorting === SortBy.NONE) return filteredHotels;
@@ -55,9 +64,9 @@ const HotelSectionCards = () => {
         <h2 className="font-bold text-xl ">Hoteles</h2>
         <input
           className="shadow appearance-none border rounded w-[80%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          placeholder="Filtra por país"
+          placeholder="Filtra por ciudad"
           onChange={(e) => {
-            setFilterCountry(e.target.value);
+            setFilterCity(e.target.value);
           }}
         />
 
@@ -71,6 +80,14 @@ const HotelSectionCards = () => {
             Agregar hotel
           </button>
 
+          <button
+            className={`${
+              filterFavorite ? "bg-blue-600" : " bg-yellow-400"
+            } hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+            onClick={handleFavorite}
+          >
+            {filterFavorite ? "Ver todos los hoteles" : "Ver hoteles favoritos"}
+          </button>
           <button
             className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             onClick={toggleSortByCountry}
