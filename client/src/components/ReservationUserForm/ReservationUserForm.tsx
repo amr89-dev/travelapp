@@ -1,20 +1,53 @@
 import { useState } from "react";
-import { Reservation } from "../../types/types";
-import { useAppDispatch } from "../../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { createReservation } from "../../redux/slices/reservations.slice";
+import { useParams } from "react-router-dom";
+import { Guest, Reservation, UserGender } from "../../types/types";
+import GuestForm from "../GuestForm/GuestForm";
 
-type Props = {
-  handleOpenForm: () => void;
-  idRoom: string;
-};
+const ReservationUserForm = () => {
+  const [guests, setGuests] = useState<Guest[]>([]);
 
-const ReservationUserForm = ({ handleOpenForm, idRoom }: Props) => {
   const dispatch = useAppDispatch();
+  const idRoom = useParams().id;
+  const roomData = useAppSelector((state) => state.roomReducer.rooms).filter(
+    (room) => room.idRoom === idRoom
+  );
+
+  const { roomCapacity } = roomData[0];
+  console.log(roomCapacity);
+
+  const [guestData, setGuestData] = useState<Guest>({
+    email: "",
+    name: "",
+    lastName: "",
+    birthdate: "",
+    gender: UserGender.NEUTER,
+    documentType: "",
+    documentNumber: "",
+    phone: "",
+  });
+
+  const handleGuestChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    setGuestData({
+      ...guestData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const addGuest = () => {
+    setGuests([...guests, guestData]);
+  };
+
   const initialState = {
-    idRoom: "",
     checkInDate: "",
     checkOutDate: "",
     userId: "",
+    idRoom: "",
+    emergencyContactName: "",
+    emergencyContactPhone: "",
   };
   const storage = localStorage.getItem("userLogged") || "";
   const { userDetails } = JSON.parse(storage);
@@ -33,7 +66,7 @@ const ReservationUserForm = ({ handleOpenForm, idRoom }: Props) => {
       userId: userDetails.id || "",
     });
   };
-  console.log(formData);
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(createReservation(formData));
@@ -47,52 +80,82 @@ const ReservationUserForm = ({ handleOpenForm, idRoom }: Props) => {
       "bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
   };
   return (
-    <div className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%]  p-8 bg-white rounded-lg border flex flex-col justify-center items-center">
+    <div className=" bg-red-500  p-8 rounded-lg border flex flex-col justify-center items-center">
       <h2 className="font-bold text-xl">Hacer una reserva</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          className={formStyles.input}
-          type="hidden"
-          name="idRoom"
-          value={formData.idRoom}
+      <form onSubmit={handleSubmit} className="w-[60%] bg-blue-500 ">
+        <input type="hidden" name="idRoom" value={formData.idRoom} />
+        <GuestForm
+          guestData={guestData}
+          handleGuestChange={handleGuestChange}
+          addGuest={addGuest}
         />
-        <label className={formStyles.label} htmlFor="checkInDate">
-          Fecha de llegada:
-        </label>
-        <input
-          className={formStyles.input}
-          type="date"
-          id="checkInDate"
-          name="checkInDate"
-          onChange={handleChange}
-          value={formData.checkInDate}
-          min={new Date().toISOString().split("T")[0]}
-          max={formData.checkOutDate}
-          required
-        />
-        <label className={formStyles.label} htmlFor="checkOutDate">
-          Fecha de salida:
-        </label>
-        <input
-          className={formStyles.input}
-          type="date"
-          id="checkOutDate"
-          name="checkOutDate"
-          onChange={handleChange}
-          value={formData.checkOutDate}
-          min={formData.checkInDate || new Date().toISOString().split("T")[0]}
-          required
-        />
+        <div className="w-full flex flex-row items-center justify-center gap-3 mb-2 px-8">
+          <div className="w-full">
+            <label className={formStyles.label} htmlFor="checkInDate">
+              Fecha de llegada:
+            </label>
+            <input
+              className={formStyles.input}
+              type="date"
+              id="checkInDate"
+              name="checkInDate"
+              onChange={handleChange}
+              value={formData.checkInDate}
+              min={new Date().toISOString().split("T")[0]}
+              max={formData.checkOutDate}
+              required
+            />
+          </div>
 
+          <div className="w-full">
+            <label className={formStyles.label} htmlFor="checkOutDate">
+              Fecha de salida:
+            </label>
+            <input
+              className={formStyles.input}
+              type="date"
+              id="checkOutDate"
+              name="checkOutDate"
+              onChange={handleChange}
+              value={formData.checkOutDate}
+              min={
+                formData.checkInDate || new Date().toISOString().split("T")[0]
+              }
+              required
+            />
+          </div>
+        </div>
+        <div className="w-full flex flex-row items-center justify-center gap-3 mb-2 px-8">
+          <div className="w-full">
+            <label className={formStyles.label} htmlFor="emergencyContactName">
+              Nombre contacto de emergencia:
+            </label>
+            <input
+              className={formStyles.input}
+              type="text"
+              id="emergencyContactName"
+              name="emergencyContactName"
+              value={formData.emergencyContactName}
+              placeholder="Ingrese nombre y apellido"
+              onChange={handleChange}
+            />
+          </div>
+          <div className="w-full">
+            <label className={formStyles.label} htmlFor="emergencyContactPhone">
+              Número contacto de emergencia:
+            </label>
+            <input
+              className={formStyles.input}
+              type="text"
+              id="emergencyContactPhone"
+              name="emergencyContactPhone"
+              value={formData.emergencyContactPhone}
+              placeholder="Ingrese numero telefonico con codigo de pais"
+              onChange={handleChange}
+            />
+          </div>
+        </div>
         <button className={formStyles.button}>Reservar</button>
-        <button
-          className={formStyles.button}
-          onClick={() => {
-            handleOpenForm();
-          }}
-        >
-          Cerrar
-        </button>
       </form>
     </div>
   );

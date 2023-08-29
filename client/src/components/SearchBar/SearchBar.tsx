@@ -8,7 +8,7 @@ const SearchBar = () => {
     city: "",
     checkInDate: "",
     checkOutDate: "",
-    qty: "",
+    numberOfGuests: "",
   });
   const dispatch = useAppDispatch();
 
@@ -22,12 +22,6 @@ const SearchBar = () => {
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     dispatch(gethotelsByParameter(inputSearch));
-    setinputSearch({
-      city: "",
-      checkInDate: "",
-      checkOutDate: "",
-      qty: "",
-    });
   };
 
   const [openCalendar, setOpenCalendar] = useState({
@@ -132,7 +126,7 @@ const SearchBar = () => {
         name="qty"
         id="passagers"
         placeholder="Cantidad de huespedes"
-        value={inputSearch.qty}
+        value={inputSearch.numberOfGuests}
         onChange={handleSearch}
       />
 

@@ -20,6 +20,15 @@ const Reservation = database.define(
       type: DataTypes.DATE,
       allowNull: false,
     },
+    emergencyContactName: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+
+    emergencyContactPhone: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
   },
   {
     timestamps: false,

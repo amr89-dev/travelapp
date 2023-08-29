@@ -119,7 +119,8 @@ async function deleteHotel(req, res) {
 }
 async function getHotelsByParameters(req, res) {
   try {
-    const { city, checkInDate, checkOutDate, numberOfGuests } = req.body;
+    const { city, checkInDate, checkOutDate, numberOfGuests = 1 } = req.body;
+
     if (!checkInDate || !checkOutDate) {
       return res.status(401).json({ message: "Las fechas son requeridas" });
     }
@@ -151,6 +152,11 @@ async function getHotelsByParameters(req, res) {
     const hotelsWithEnoughCapacity = roomsInCityWithTotalCapacity
       .filter((hotel) => hotel.dataValues.totalCapacity >= numberOfGuests)
       .map((hotel) => hotel.hotel.idHotel);
+    if (hotelsWithEnoughCapacity.length <= 0) {
+      return res
+        .status(401)
+        .json({ message: "No hay hoteles con suficiente capacidad" });
+    }
 
     const conflictingReservations = await Reservation.findAll({
       where: {

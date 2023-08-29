@@ -2,11 +2,13 @@ import Layout from "../../components/Layout/Layout";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import HotelCard from "../../components/HotelCard/HotelCard";
-import { setResult } from "../../redux/slices/hotel.slice";
+import { setErrorHotel, setResult } from "../../redux/slices/hotel.slice";
+import Swal from "sweetalert2";
 
 const Home = () => {
   const dispatch = useAppDispatch();
-  const hotels = useAppSelector((state) => state.hotelReducer.hotels);
+  const hotelsState = useAppSelector((state) => state.hotelReducer);
+  const { hotels, error } = hotelsState;
   const results = useAppSelector((state) => state.hotelReducer.results);
   const availableHotels = hotels.filter((hotel) => hotel.available);
   const hotelsToRender = results.length ? results : availableHotels;
@@ -15,6 +17,17 @@ const Home = () => {
     dispatch(setResult([]));
   };
 
+  if (error?.message) {
+    Swal.fire({
+      title: "Error!",
+      text: `${error?.message}`,
+      icon: "error",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#1d4ed8",
+    }).then(() => {
+      dispatch(setErrorHotel(null));
+    });
+  }
   return (
     <Layout>
       <SearchBar />

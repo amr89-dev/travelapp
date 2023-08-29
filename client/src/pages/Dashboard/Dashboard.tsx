@@ -13,7 +13,7 @@ const Dashboard = () => {
         {location.length > 11 ? (
           <Outlet />
         ) : (
-          <div className="w-[80%] bg-red-500 flex flex-col items-center">
+          <div className="w-[80%]  flex flex-col items-center">
             <h2 className=" font-bold text-2xl m-16 ">
               Panel de Administrador
             </h2>

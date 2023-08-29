@@ -67,7 +67,6 @@ export const gethotelsByParameter = (searchData: InputSearch): AppThunk => {
       dispatch(setResult(hotels));
     } catch (error) {
       const axiosError = error as AxiosError;
-
       dispatch(setErrorHotel(axiosError.response?.data));
     }
   };

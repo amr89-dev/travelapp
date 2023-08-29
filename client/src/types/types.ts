@@ -32,7 +32,7 @@ export interface InputSearch {
   city: string;
   checkInDate: string;
   checkOutDate: string;
-  qty: string;
+  numberOfGuests: string;
 }
 export enum SortBy {
   NONE = "none",
@@ -124,6 +124,7 @@ export type Room = {
   resevations?: Date[] | undefined;
   netIncome?: string;
   hotel?: Hotel;
+  roomCapacity: number;
 };
 export interface RoomInitialState {
   rooms: Room[];
@@ -157,13 +158,15 @@ export interface LoginInitialState {
 
 //RESERVATION
 export type Reservation = {
-  idReservation: string;
+  idReservation?: string;
   checkInDate: string;
   checkOutDate: string;
   userId: string;
   guests?: Guest[];
   idRoom?: string;
   room?: Room;
+  emergencyContactName?: string;
+  emergencyContactPhone?: string;
 };
 
 export interface UpdateReservationFormProps {

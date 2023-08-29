@@ -22,6 +22,7 @@ import { loadAllUsers } from "./redux/slices/user.slice.ts";
 import ReservationDashboard from "./components/ReservationDashboard/ReservationDashboard.tsx";
 import AvailableRooms from "./components/AvailableRooms/AvailableRooms.tsx";
 import { loadReservations } from "./redux/slices/reservations.slice.ts";
+import ReservationUserForm from "./components/ReservationUserForm/ReservationUserForm.tsx";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -34,6 +35,10 @@ function App() {
       {
         path: "/availablerooms/:id",
         element: <AvailableRooms />,
+      },
+      {
+        path: "/reservation/:id",
+        element: <ReservationUserForm />,
       },
 
       {
