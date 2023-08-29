@@ -13,10 +13,10 @@ reservationRoutes.post("/", (req, res) => {
 reservationRoutes.get("/", (req, res) => {
   getReservations(req, res);
 });
-reservationRoutes.put("/:id", (req, res) => {
+reservationRoutes.put("/", (req, res) => {
   updateReservation(req, res);
 });
-reservationRoutes.delete("/;id", (req, res) => {
+reservationRoutes.delete("/:id", (req, res) => {
   deleteReservation(req, res);
 });
 

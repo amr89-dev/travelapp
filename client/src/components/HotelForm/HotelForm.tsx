@@ -11,8 +11,8 @@ import { HandleOpenContext } from "../../utils/context";
 
 const HotelForm = () => {
   const dispatch = useAppDispatch();
-  const hotelState = useAppSelector((state) => state.hotelReducer);
   const context = useContext(HandleOpenContext);
+  const hotelState = useAppSelector((state) => state.hotelReducer);
 
   const { error, success } = hotelState;
 

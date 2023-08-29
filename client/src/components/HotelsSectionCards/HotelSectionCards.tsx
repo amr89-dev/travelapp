@@ -54,6 +54,8 @@ const HotelSectionCards = () => {
       const extractProperty = compareProperties[sorting];
       const propertyA = extractProperty(a);
       const propertyB = extractProperty(b);
+      console.log(propertyA);
+
       return propertyA && propertyB ? propertyA.localeCompare(propertyB) : 0;
     });
   }, [filteredHotels, sorting]);
@@ -61,7 +63,8 @@ const HotelSectionCards = () => {
   return (
     <>
       <header className=" h-1/3  flex flex-col items-center justify-center gap-4 m-4 mb-8 ">
-        <h2 className="font-bold text-xl ">Hoteles</h2>
+        <h2 className="font-bold text-2xl ">Hoteles</h2>
+        <p>Ver, agregar y editar hoteles</p>
         <input
           className="shadow appearance-none border rounded w-[80%] py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           placeholder="Filtra por ciudad"
@@ -86,7 +89,7 @@ const HotelSectionCards = () => {
             } hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
             onClick={handleFavorite}
           >
-            {filterFavorite ? "Ver todos los hoteles" : "Ver hoteles favoritos"}
+            {filterFavorite ? "Ver todos los hoteles" : "Hoteles favoritos"}
           </button>
           <button
             className="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
@@ -103,7 +106,7 @@ const HotelSectionCards = () => {
         <thead className="bg-blue-600 text-white">
           <tr className=" text-left">
             <th
-              className=" cursor-pointer hover:bg-blue-500"
+              className=""
               onClick={() => {
                 handleChangeSort(SortBy.NAME);
               }}
@@ -116,6 +119,20 @@ const HotelSectionCards = () => {
                 handleChangeSort(SortBy.NAME);
               }}
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 inline mr-1"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
+                />
+              </svg>
               Nombre:
             </th>
             <th
@@ -124,6 +141,20 @@ const HotelSectionCards = () => {
                 handleChangeSort(SortBy.CITY);
               }}
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 inline mr-1"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
+                />
+              </svg>
               Ciudad:
             </th>
             <th
@@ -132,6 +163,20 @@ const HotelSectionCards = () => {
                 handleChangeSort(SortBy.COUNTRY);
               }}
             >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+                className="w-6 h-6 inline mr-1"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5"
+                />
+              </svg>
               Pais:
             </th>
             <th>Acciones: </th>

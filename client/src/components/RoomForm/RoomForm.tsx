@@ -88,36 +88,41 @@ const RoomForm = () => {
         </h2>
 
         <div className=" shadow-2xl rounded-lg  sm:w-1/2 flex flex-col p-4 gap-3 mb-3">
-          <div>
-            <label htmlFor="numRooms" className={formStyles.label}>
-              Cantidad de habitaciones a crear:
-            </label>
-            <input
-              type="number"
-              name="numRooms"
-              className={formStyles.input}
-              id="numRooms"
-              onChange={handleChange}
-              value={formData.numRooms}
-              min="0"
-            />
-          </div>
-          <div>
-            <label htmlFor="roomType" className={formStyles.label}>
-              Tipo de habitación:
-            </label>
-            <select
-              name="roomType"
-              id="roomType"
-              onChange={handleChange}
-              value={formData.roomType}
-            >
-              <option disabled>Selecciona el tipo de habitación</option>
-              <option value="Sencilla">Sencilla</option>
-              <option value="Doble">Doble</option>
-              <option value="Triple">Triple</option>
-              <option value="Suite">Suite</option>
-            </select>
+          <div className="flex flex-row items-center gap-4">
+            <div>
+              <label htmlFor="numRooms" className={formStyles.label}>
+                Cantidad de habitaciones a crear:
+              </label>
+              <input
+                type="number"
+                name="numRooms"
+                className={formStyles.input}
+                id="numRooms"
+                onChange={handleChange}
+                value={formData.numRooms}
+                min="0"
+              />
+            </div>
+            <div>
+              <label htmlFor="roomType" className={formStyles.label}>
+                Tipo de habitación:
+              </label>
+              <select
+                className={formStyles.input}
+                name="roomType"
+                id="roomType"
+                onChange={handleChange}
+                value={formData.roomType}
+              >
+                <option>Selecciona el tipo de habitación</option>
+                <option value="Sencilla" selected>
+                  Sencilla
+                </option>
+                <option value="Doble">Doble</option>
+                <option value="Triple">Triple</option>
+                <option value="Suite">Suite</option>
+              </select>
+            </div>
           </div>
           <div>
             <label htmlFor="roomPrice" className={formStyles.label}>

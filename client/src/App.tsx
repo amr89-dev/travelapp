@@ -21,6 +21,7 @@ import RoomDashboard from "./components/RoomDashboard/RoomDashboard.tsx";
 import { loadAllUsers } from "./redux/slices/user.slice.ts";
 import ReservationDashboard from "./components/ReservationDashboard/ReservationDashboard.tsx";
 import AvailableRooms from "./components/AvailableRooms/AvailableRooms.tsx";
+import { loadReservations } from "./redux/slices/reservations.slice.ts";
 
 function App() {
   const dispatch = useAppDispatch();
@@ -89,6 +90,7 @@ function App() {
     dispatch(gethotels());
     dispatch(getRooms());
     dispatch(loadAllUsers());
+    dispatch(loadReservations());
     checkAuth();
   }, []);
   return (

@@ -40,6 +40,7 @@ async function createRooms(req, res) {
         roomPrice: Number(roomPrice),
         roomTaxes: Number(roomTaxes),
         netIncome: Number(roomPrice) - taxes,
+        roomLocation,
         available,
         hotelId: idHotel,
       });
@@ -73,16 +74,20 @@ async function getRooms(req, res) {
 
 async function updateRooms(req, res) {
   try {
-    const { roomPrice, roomType, idRoom } = req.body;
+    const { roomPrice, roomType, idRoom, available, roomTaxes } = req.body;
 
     const roomToUpdate = await Room.findByPk(idRoom);
 
     if (!roomToUpdate) {
       return res.status(404).json({ message: "Habitación no encontrada" });
     }
-
-    roomToUpdate.roomPrice = roomPrice;
-    roomToUpdate.roomType = roomType;
+    const percent = Number(roomTaxes) / 100;
+    const taxes = Number(roomPrice) * percent;
+    roomToUpdate.roomPrice = roomPrice ?? roomToUpdate.roomPrice;
+    roomToUpdate.roomType = roomType ?? roomToUpdate.roomType;
+    roomToUpdate.available = available ?? roomToUpdate.available;
+    roomToUpdate.roomTaxes = roomTaxes ?? roomToUpdate.roomTaxes;
+    roomToUpdate.netIncome = Number(roomPrice) - taxes;
 
     await roomToUpdate.save();
 

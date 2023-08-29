@@ -39,6 +39,13 @@ export enum SortBy {
   NAME = "name",
   CITY = "city",
   COUNTRY = "country",
+  HOTEL = "idHotel",
+  TYPE = "roomType",
+  PRICE = "roomPrice",
+  LOCATION = "roomLocation",
+  INCOME = "netIncome",
+  TAXES = "roomTaxes",
+  AVAILABLE = "available",
 }
 
 /*----- REDUX ------*/
@@ -115,9 +122,16 @@ export type Room = {
   available?: boolean;
   hotelId?: string;
   resevations?: Date[] | undefined;
+  netIncome?: string;
+  hotel?: Hotel;
 };
 export interface RoomInitialState {
   rooms: Room[];
+  error: AxiosError | null;
+  success: boolean | null;
+}
+export interface ReservationInitialState {
+  reservations: Reservation[];
   error: AxiosError | null;
   success: boolean | null;
 }
@@ -126,6 +140,11 @@ export interface RoomFormProps {
 }
 export interface RoomCardProps {
   roomData: Room;
+  index: number;
+}
+export interface ReservationCardProps {
+  reservationData: Reservation;
+  index: number;
 }
 
 //LOGIN
@@ -138,8 +157,28 @@ export interface LoginInitialState {
 
 //RESERVATION
 export type Reservation = {
-  idRoom: string;
+  idReservation: string;
   checkInDate: string;
   checkOutDate: string;
   userId: string;
+  guests?: Guest[];
+  idRoom?: string;
+  room?: Room;
+};
+
+export interface UpdateReservationFormProps {
+  reservation: Reservation;
+}
+
+//GUEST
+export type Guest = {
+  idGuest?: string;
+  email: string;
+  name: string;
+  lastName: string;
+  birthdate: string;
+  gender: UserGender;
+  documentType: string;
+  documentNumber: string;
+  phone: string;
 };

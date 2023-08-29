@@ -1,5 +1,6 @@
 const { DataTypes } = require("sequelize");
 const { database } = require("../DB");
+const Guest = require("./Guest");
 
 const Reservation = database.define(
   "reservations",
@@ -25,4 +26,6 @@ const Reservation = database.define(
   }
 );
 
+Reservation.belongsToMany(Guest, { through: "ReservationGuests" });
+Guest.belongsToMany(Reservation, { through: "ReservationGuests" });
 module.exports = Reservation;

@@ -93,6 +93,21 @@ export const updateHotel = (hotelData: Hotel): AppThunk => {
       const hotelCreated = await hotelToUpdate.data;
       dispatch(addHotel(hotelCreated));
       dispatch(gethotels());
+      dispatch(setSuccess(true));
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      console.log(axiosError);
+      dispatch(setErrorHotel(axiosError));
+    }
+  };
+};
+export const updateHotelFavorite = (hotelData: Hotel): AppThunk => {
+  return async (dispatch) => {
+    try {
+      const hotelToUpdate = await axios.put(`/hotel`, hotelData);
+      const hotelCreated = await hotelToUpdate.data;
+      dispatch(addHotel(hotelCreated));
+      dispatch(gethotels());
     } catch (err) {
       const axiosError = err as AxiosError;
       console.log(axiosError);

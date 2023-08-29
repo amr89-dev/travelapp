@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AppThunk } from "../store";
 import axios, { AxiosError } from "axios";
-import { Reservation } from "../../types/types";
+import { Reservation, ReservationInitialState } from "../../types/types";
 
-const initialState = {
+const initialState: ReservationInitialState = {
   reservations: [],
   error: null,
   success: null,
@@ -19,6 +19,20 @@ export const reservationSlice = createSlice({
         reservations: action.payload,
       };
     },
+    addReservation(state, action) {
+      return {
+        ...state,
+        reservations: [...state.reservations, action.payload],
+      };
+    },
+    delReservation(state, action) {
+      return {
+        ...state,
+        reservations: state.reservations.filter(
+          (el) => el.idReservation !== action.payload
+        ),
+      };
+    },
     setError(state, action) {
       return {
         ...state,
@@ -28,7 +42,7 @@ export const reservationSlice = createSlice({
     setSuccess(state, action) {
       return {
         ...state,
-        error: action.payload,
+        success: action.payload,
       };
     },
   },
@@ -62,6 +76,42 @@ export const createReservation = (reservationData: Reservation): AppThunk => {
     }
   };
 };
-export const { getReservations, setError, setSuccess } =
-  reservationSlice.actions;
+export const updateRerservation = (reservationData: Reservation): AppThunk => {
+  return async (dispatch) => {
+    try {
+      const reservationToUpdate = await axios.put(
+        `/reservation`,
+        reservationData
+      );
+      const reservationUpdated = await reservationToUpdate.data;
+      dispatch(addReservation(reservationUpdated));
+      dispatch(loadReservations());
+      dispatch(setSuccess(true));
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      console.log(axiosError);
+      dispatch(setError(axiosError.response?.data));
+    }
+  };
+};
+
+export const deleteReservation = (idReservation: string): AppThunk => {
+  return async (dispatch) => {
+    try {
+      dispatch(delReservation(idReservation));
+      await axios.delete(`/reservation/${idReservation}`);
+    } catch (err) {
+      const axiosError = err as AxiosError;
+      console.log(axiosError);
+      dispatch(setError(axiosError.response?.data));
+    }
+  };
+};
+export const {
+  getReservations,
+  setError,
+  setSuccess,
+  addReservation,
+  delReservation,
+} = reservationSlice.actions;
 export default reservationSlice.reducer;

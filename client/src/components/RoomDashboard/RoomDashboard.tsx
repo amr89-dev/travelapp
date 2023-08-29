@@ -12,7 +12,7 @@ const RoomDashboard = () => {
   );
 
   return (
-    <div>
+    <div className="flex flex-col w-full">
       <RoomSectionCards />
       {context?.roomUpdateOpen.isOpen && <UpdateRoomForm room={room[0]} />}
       {context?.reservationFormOpen.isOpen && <ReservationForm />}

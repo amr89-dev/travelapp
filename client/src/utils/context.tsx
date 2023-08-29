@@ -10,9 +10,13 @@ interface HandleOpenContextType {
   handleRoomFormOpen: (idHotel: string | undefined) => void;
   handleReservationFormOpen: (idRoom: string | undefined) => void;
   hotelDetailOpen: { isOpen: boolean; id: string | undefined };
+  reservationDetailOpen: { isOpen: boolean; id: string | undefined };
   handleHotelDetailOpen: (idHotel: string | undefined) => void;
+  handleReservationDetailOpen: (idHotel: string | undefined) => void;
   hotelFormOpen: boolean;
   handleHotelFormOpen: () => void;
+  reservationUpdateOpen: { isOpen: boolean; id: string | undefined };
+  handleReservationUpdateOpen: (idREservation: string | undefined) => void;
 }
 
 interface HandleOpenProviderProps {
@@ -44,6 +48,14 @@ const HandleOpenProvider: FC<HandleOpenProviderProps> = ({ children }) => {
     isOpen: false,
     id: "",
   });
+  const [reservationDetailOpen, setReservationDetailOpen] = useState({
+    isOpen: false,
+    id: "",
+  });
+  const [reservationUpdateOpen, setReservationUpdateOpen] = useState({
+    isOpen: false,
+    id: "",
+  });
   const [hotelFormOpen, setHotelFormOpen] = useState(false);
 
   const handleHotelUpdateOpen = (idHotel: string | undefined) => {
@@ -58,6 +70,13 @@ const HandleOpenProvider: FC<HandleOpenProviderProps> = ({ children }) => {
       setRoomUpdateOpen({ isOpen: false, id: "" });
     } else {
       setRoomUpdateOpen({ isOpen: true, id: idRoom || "" });
+    }
+  };
+  const handleReservationUpdateOpen = (idReservation: string | undefined) => {
+    if (reservationUpdateOpen.isOpen) {
+      setReservationUpdateOpen({ isOpen: false, id: "" });
+    } else {
+      setReservationUpdateOpen({ isOpen: true, id: idReservation || "" });
     }
   };
 
@@ -82,6 +101,13 @@ const HandleOpenProvider: FC<HandleOpenProviderProps> = ({ children }) => {
       setHotelDetailOpen({ isOpen: true, id: idHotel || "" });
     }
   };
+  const handleReservationDetailOpen = (idReservation: string | undefined) => {
+    if (reservationDetailOpen.isOpen) {
+      setReservationDetailOpen({ isOpen: false, id: "" });
+    } else {
+      setReservationDetailOpen({ isOpen: true, id: idReservation || "" });
+    }
+  };
   const handleHotelFormOpen = () => {
     setHotelFormOpen(!hotelFormOpen);
   };
@@ -99,6 +125,10 @@ const HandleOpenProvider: FC<HandleOpenProviderProps> = ({ children }) => {
     handleRoomUpdateOpen,
     handleReservationFormOpen,
     reservationFormOpen,
+    reservationUpdateOpen,
+    handleReservationUpdateOpen,
+    reservationDetailOpen,
+    handleReservationDetailOpen,
   };
 
   return (

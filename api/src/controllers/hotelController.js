@@ -66,8 +66,16 @@ async function createHotel(req, res) {
 
 async function updateHotel(req, res) {
   try {
-    const { name, address, city, country, description, favorite, idHotel } =
-      req.body;
+    const {
+      name,
+      address,
+      city,
+      country,
+      description,
+      favorite,
+      idHotel,
+      available,
+    } = req.body;
 
     const hotelToUpdate = await Hotel.findByPk(idHotel);
 
@@ -81,6 +89,7 @@ async function updateHotel(req, res) {
     hotelToUpdate.country = country ?? hotelToUpdate.country;
     hotelToUpdate.description = description ?? hotelToUpdate.description;
     hotelToUpdate.favorite = favorite ?? hotelToUpdate.favorite;
+    hotelToUpdate.available = available ?? hotelToUpdate.available;
 
     await hotelToUpdate.save();
 

@@ -1,29 +1,26 @@
 import { useContext, useState } from "react";
 import { HandleOpenContext } from "../../utils/context";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { Reservation } from "../../types/types";
+import { Reservation, UpdateReservationFormProps } from "../../types/types";
 import {
-  createReservation,
   setError,
   setSuccess,
+  updateRerservation,
 } from "../../redux/slices/reservations.slice";
 import Swal from "sweetalert2";
 
-const ReservationForm = () => {
+const UpdateReservationForm = ({ reservation }: UpdateReservationFormProps) => {
   const context = useContext(HandleOpenContext);
-  const idRoom = context?.reservationFormOpen.id;
-  const users = useAppSelector((state) => state.userReducer.users);
   const reservationsState = useAppSelector((state) => state.reservationReducer);
   const dispatch = useAppDispatch();
   const { error, success } = reservationsState;
-  const initialState = {
-    idReservation: "",
-    checkInDate: "",
-    checkOutDate: "",
-    userId: "",
-  };
 
-  const [formData, setFormData] = useState<Reservation>(initialState);
+  const [formData, setFormData] = useState<Reservation>({
+    idReservation: reservation.idReservation,
+    checkInDate: reservation.checkInDate,
+    checkOutDate: reservation.checkOutDate,
+    userId: reservation.userId,
+  });
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -33,13 +30,11 @@ const ReservationForm = () => {
     setFormData({
       ...formData,
       [name]: value,
-      idRoom: idRoom || "",
     });
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    dispatch(createReservation(formData));
-    setFormData(initialState);
+    dispatch(updateRerservation(formData));
   };
 
   const formStyles = {
@@ -58,29 +53,29 @@ const ReservationForm = () => {
       confirmButtonColor: "#1d4ed8",
     }).then(() => {
       dispatch(setError(null));
-      context?.handleReservationFormOpen(undefined);
+      context?.handleReservationUpdateOpen(undefined);
     });
   } else if (success) {
     Swal.fire({
       title: "Exito!",
-      text: `La reserva ha sido creada correctamente`,
+      text: `La reserva ha sido actualizada correctamente`,
       icon: "success",
       confirmButtonText: "Ok",
       confirmButtonColor: "#1d4ed8",
     }).then(() => {
       dispatch(setSuccess(null));
-      context?.handleReservationFormOpen(undefined);
+      context?.handleReservationUpdateOpen(undefined);
     });
   }
   return (
-    <div className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[60%] h-[60%]  p-8 bg-white rounded-lg border flex flex-col justify-center items-center">
-      <h2 className="font-bold text-xl">Hacer una reserva</h2>
+    <div className="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[40%] h-[60%]  p-8 bg-white rounded-lg border flex flex-col justify-center items-center">
+      <h2 className="font-bold text-xl mb-4">Actualizar Reserva</h2>
       <form onSubmit={handleSubmit}>
         <input
           className={formStyles.input}
           type="hidden"
           name="idRoom"
-          value={formData.idRoom}
+          value={formData.idReservation}
         />
         <div>
           <label className={formStyles.label} htmlFor="checkInDate">
@@ -113,33 +108,13 @@ const ReservationForm = () => {
             required
           />
         </div>
-        <div className="mb-4">
-          <label htmlFor="users">Asignar a un usuario</label>
-          <input
-            className={formStyles.input}
-            type="text"
-            list="users"
-            name="userId"
-            value={formData.userId}
-            onChange={handleChange}
-            required
-          />
-          <datalist id="users" className={formStyles.input}>
-            <option disabled>Asignar a un usuario</option>
-            {users.map((el) => (
-              <option
-                key={el.email}
-                value={el.id}
-              >{`${el.name} ${el.lastName}`}</option>
-            ))}
-          </datalist>
-        </div>
-        <div className="flex flex-row gap-2 items-center justify-center">
-          <button className={formStyles.button}>Reservar</button>
+
+        <div className="flex flex-row gap-2 items-center justify-center mt-4">
+          <button className={formStyles.button}>Actualizar reserva</button>
           <button
             className={formStyles.button}
             onClick={() => {
-              context?.handleReservationFormOpen(undefined);
+              context?.handleReservationUpdateOpen(undefined);
             }}
           >
             Cerrar
@@ -149,5 +124,4 @@ const ReservationForm = () => {
     </div>
   );
 };
-
-export default ReservationForm;
+export default UpdateReservationForm;

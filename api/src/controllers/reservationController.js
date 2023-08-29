@@ -1,10 +1,28 @@
 const { Sequelize } = require("sequelize");
 const Reservation = require("../models/Reservation");
 const Room = require("../models/Room");
+const Guest = require("../models/Guest");
+const Hotel = require("../models/Hotel");
 
 async function getReservations(req, res) {
   try {
-    const reservation = await Reservation.findAll();
+    const reservation = await Reservation.findAll({
+      include: [
+        {
+          model: Room,
+          as: "room",
+          include: [
+            {
+              model: Hotel,
+              as: "hotel",
+            },
+          ],
+        },
+        {
+          model: Guest,
+        },
+      ],
+    });
 
     return res.status(200).json(reservation);
   } catch (error) {
@@ -58,10 +76,9 @@ async function createReservation(req, res) {
 
 async function updateReservation(req, res) {
   try {
-    const { id } = req.params;
-    const { checkInDate, checkOutDate } = req.body;
+    const { checkInDate, checkOutDate, idReservation } = req.body;
 
-    const reservationToUpdate = await Reservation.findByPk(id);
+    const reservationToUpdate = await Reservation.findByPk(idReservation);
 
     if (!reservationToUpdate) {
       return res.status(404).json({ message: "Reserva no encontrada" });
@@ -86,7 +103,7 @@ async function deleteReservation(req, res) {
     const reservationToDelete = await Reservation.findByPk(id);
 
     if (!reservationToDelete) {
-      return res.status(404).json({ message: "Hotel no encontrado" });
+      return res.status(404).json({ message: "Reserva no encontrado" });
     }
 
     await reservationToDelete.destroy();

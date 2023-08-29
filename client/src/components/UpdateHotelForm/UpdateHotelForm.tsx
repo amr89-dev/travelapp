@@ -1,12 +1,20 @@
 import { useState, useContext } from "react";
 import { Hotel, updateHotelFormProps } from "../../types/types";
-import { useAppDispatch } from "../../hooks/reduxHooks";
-import { updateHotel } from "../../redux/slices/hotel.slice";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import {
+  setErrorHotel,
+  setSuccess,
+  updateHotel,
+} from "../../redux/slices/hotel.slice";
 import { HandleOpenContext } from "../../utils/context";
+import Swal from "sweetalert2";
 
 const UpdateHotelForm = ({ hotel }: updateHotelFormProps) => {
   const dispatch = useAppDispatch();
   const context = useContext(HandleOpenContext);
+  const hotelState = useAppSelector((state) => state.hotelReducer);
+
+  const { error, success } = hotelState;
 
   const [formData, setFormData] = useState<Hotel>({
     idHotel: hotel?.idHotel,
@@ -43,6 +51,29 @@ const UpdateHotelForm = ({ hotel }: updateHotelFormProps) => {
     textArea:
       "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline resize-none ",
   };
+  if (error?.message) {
+    Swal.fire({
+      title: "Error!",
+      text: `${error?.message}`,
+      icon: "error",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#1d4ed8",
+    }).then(() => {
+      dispatch(setErrorHotel(null));
+      context?.handleHotelUpdateOpen(undefined);
+    });
+  } else if (success) {
+    Swal.fire({
+      title: "Exito!",
+      text: `El hotel ha sido actualizado exitosamente`,
+      icon: "success",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#1d4ed8",
+    }).then(() => {
+      dispatch(setSuccess(null));
+      context?.handleHotelUpdateOpen(undefined);
+    });
+  }
 
   return (
     <section className="fixed inset-0 min-h-screen p-8   flex flex-col items-center justify-center bg-white rounded-lg border">
@@ -135,8 +166,8 @@ const UpdateHotelForm = ({ hotel }: updateHotelFormProps) => {
                   name="available"
                   value={"true"}
                   onChange={handleChange}
-                  defaultChecked
                   className="mr-3"
+                  checked={formData.available}
                 />
                 Disponible
               </label>
@@ -147,6 +178,7 @@ const UpdateHotelForm = ({ hotel }: updateHotelFormProps) => {
                   value={"false"}
                   onChange={handleChange}
                   className="mr-3"
+                  checked={!formData.available}
                 />
                 No disponible
               </label>
