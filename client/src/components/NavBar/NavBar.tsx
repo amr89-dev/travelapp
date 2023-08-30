@@ -9,7 +9,7 @@ const NavBar = () => {
   //const dispatch = useAppDispatch();
   const profile = useAppSelector(({ authReducer }) => authReducer.loggedUser);
   const [menuIsOpen, setMenuIsOpen] = useState(true);
-  const location = useLocation().pathname.slice(3);
+  const location = useLocation().pathname.slice(1);
   const isAuth = useAuth();
   const isAdmin = useRole();
 

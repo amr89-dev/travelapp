@@ -1,7 +1,7 @@
 import { NavLink, useLocation } from "react-router-dom";
 
 const SideBar = () => {
-  const location = useLocation().pathname.slice(13);
+  const location = useLocation().pathname.slice(11);
   console.log(location);
 
   return (
