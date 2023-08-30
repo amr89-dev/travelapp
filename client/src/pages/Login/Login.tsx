@@ -19,9 +19,11 @@ const Login = () => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
+    const value =
+      e.target.name === "email" ? e.target.value.toLowerCase() : e.target.value;
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [e.target.name]: value,
     });
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
