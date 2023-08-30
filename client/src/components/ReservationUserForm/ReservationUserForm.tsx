@@ -123,6 +123,7 @@ const ReservationUserForm = () => {
       confirmButtonColor: "#1d4ed8",
     }).then(() => {
       dispatch(setSuccess(null));
+      navigate("/");
     });
   }
   return (
