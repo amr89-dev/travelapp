@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { UserProfileNavBarProps } from "../../types/types";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import { getAuth, logOut } from "../../redux/slices/auth.slice";
+import { getAuth, logOut, setSuccess } from "../../redux/slices/auth.slice";
 
 /*eslint-disable */
 const UserProfile = ({ profile }: UserProfileNavBarProps) => {
@@ -28,6 +28,7 @@ const UserProfile = ({ profile }: UserProfileNavBarProps) => {
         role: "",
       })
     );
+    dispatch(setSuccess(false));
     navigate("/");
   };
 
