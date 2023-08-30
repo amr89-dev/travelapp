@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 
 const ReservationUserForm = () => {
   const navigate = useNavigate();
+
   const [guests, setGuests] = useState<Guest[]>([]);
   const dispatch = useAppDispatch();
   const idRoom = useParams().id;
@@ -88,6 +89,8 @@ const ReservationUserForm = () => {
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    console.log(formData);
+
     e.preventDefault();
     Swal.showLoading();
     dispatch(createReservation(formData));

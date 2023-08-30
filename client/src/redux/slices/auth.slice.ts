@@ -25,6 +25,9 @@ const authSlice = createSlice({
     setLoggedUser(state, action) {
       return { ...state, loggedUser: action.payload };
     },
+    logOut(state, action) {
+      return { ...state, loggedUser: action.payload };
+    },
     setError(state, action) {
       return {
         ...state,
@@ -50,10 +53,7 @@ export const loginUser = (userData: UserLogin): AppThunk => {
       dispatch(setSuccess(true));
       dispatch(getAuth(true));
       dispatch(setLoggedUser(userLogged));
-      localStorage.setItem(
-        "userLogged",
-        JSON.stringify(userLogged.userDetails)
-      );
+      localStorage.setItem("userLogged", JSON.stringify(userLogged));
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
@@ -63,7 +63,7 @@ export const loginUser = (userData: UserLogin): AppThunk => {
   };
 };
 
-export const { getAuth, setSuccess, setError, setLoggedUser } =
+export const { getAuth, setSuccess, setError, setLoggedUser, logOut } =
   authSlice.actions;
 
 export default authSlice.reducer;

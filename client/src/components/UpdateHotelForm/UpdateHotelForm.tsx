@@ -40,6 +40,7 @@ const UpdateHotelForm = ({ hotel }: updateHotelFormProps) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    Swal.showLoading();
     dispatch(updateHotel(formData));
   };
   const formStyles = {

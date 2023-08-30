@@ -2,6 +2,7 @@ import { useState } from "react";
 import { InputSearch } from "../../types/types";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { gethotelsByParameter } from "../../redux/slices/hotel.slice";
+import Swal from "sweetalert2";
 
 const SearchBar = () => {
   const [inputSearch, setinputSearch] = useState<InputSearch>({
@@ -21,6 +22,7 @@ const SearchBar = () => {
   };
   const handleOnSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    Swal.showLoading();
     dispatch(gethotelsByParameter(inputSearch));
   };
 

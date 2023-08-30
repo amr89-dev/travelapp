@@ -1,4 +1,3 @@
-import React from "react";
 import { type childrenProps } from "../../types/types";
 const Layout = ({ children }: childrenProps) => {
   return (

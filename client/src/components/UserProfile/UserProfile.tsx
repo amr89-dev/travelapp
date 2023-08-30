@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { UserProfileNavBarProps } from "../../types/types";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import { getAuth, setLoggedUser } from "../../redux/slices/auth.slice";
+import { getAuth, logOut } from "../../redux/slices/auth.slice";
 
 /*eslint-disable */
 const UserProfile = ({ profile }: UserProfileNavBarProps) => {
@@ -21,7 +21,7 @@ const UserProfile = ({ profile }: UserProfileNavBarProps) => {
     localStorage.removeItem("userLogged");
     dispatch(getAuth(false));
     dispatch(
-      setLoggedUser({
+      logOut({
         email: "",
         password: "",
         id: "",
@@ -62,7 +62,7 @@ const UserProfile = ({ profile }: UserProfileNavBarProps) => {
         <NavLink to={"/"}>
           <div className="px-4 py-3 text-sm text-gray-900 dark:text-white">
             <div className="font-medium truncate"></div>
-            {profile ? userDetails?.name : "Nombre"}
+            {userDetails ? userDetails.name : "Nombre"}
           </div>
         </NavLink>
         <ul className="py-2 text-sm text-gray-700 dark:text-gray-200">

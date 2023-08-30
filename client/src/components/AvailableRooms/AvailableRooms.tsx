@@ -1,5 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../hooks/reduxHooks";
+import { useAuth } from "../../hooks/useAuth";
 
 const AvailableRooms = () => {
   const navigate = useNavigate();
@@ -11,6 +12,7 @@ const AvailableRooms = () => {
   const hotelName = useAppSelector((state) => state.hotelReducer.hotels).filter(
     (hotel) => hotel.idHotel === id
   )[0].name;
+  const isAuth = useAuth();
 
   return (
     <div className="flex flex-col items-center">
@@ -67,7 +69,9 @@ const AvailableRooms = () => {
                 <button
                   className="w-full h-full   rounded-lg "
                   onClick={() => {
-                    navigate(`/reservation/${room.idRoom}`);
+                    isAuth
+                      ? navigate(`/reservation/${room.idRoom}`)
+                      : navigate("/login");
                   }}
                 >
                   Reservar

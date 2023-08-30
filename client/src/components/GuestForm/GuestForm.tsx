@@ -33,7 +33,7 @@ const GuestForm = ({
   return (
     <div className="flex flex-col items-center mb-4">
       <section
-        className={`flex flex-col items-center justify-center w-full p-8 pt-3${
+        className={`flex flex-col items-center justify-center w-full p-8 pt-3 ${
           guestForm ? "hidden" : ""
         }`}
       >

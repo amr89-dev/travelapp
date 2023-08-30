@@ -3,6 +3,7 @@ import { HotelCardProps } from "../../types/types";
 import { HandleOpenContext } from "../../utils/context";
 import { useAppDispatch } from "../../hooks/reduxHooks";
 import { updateHotelFavorite } from "../../redux/slices/hotel.slice";
+import Swal from "sweetalert2";
 
 const HotelRow = ({ hotelData, index }: HotelCardProps) => {
   const context = useContext(HandleOpenContext);
@@ -10,11 +11,15 @@ const HotelRow = ({ hotelData, index }: HotelCardProps) => {
 
   const { name, city, country, idHotel, favorite, available } = hotelData;
   const handleFavorite = (idHotel: string | undefined) => {
+    Swal.showLoading();
     if (favorite) {
       dispatch(updateHotelFavorite({ favorite: false, idHotel }));
     } else {
       dispatch(updateHotelFavorite({ favorite: true, idHotel }));
     }
+    setTimeout(() => {
+      Swal.close();
+    }, 3000);
   };
 
   return (

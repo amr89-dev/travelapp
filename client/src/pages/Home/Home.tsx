@@ -27,6 +27,8 @@ const Home = () => {
     }).then(() => {
       dispatch(setErrorHotel(null));
     });
+  } else {
+    Swal.close();
   }
   return (
     <Layout>

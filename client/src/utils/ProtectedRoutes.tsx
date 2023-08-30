@@ -7,13 +7,7 @@ const ProtectedRoutes = () => {
   const isAuth = useAuth();
   const isAdmin = useRole();
   //console.log("userIsLogged", useAuth());
-  if (isAuth && isAdmin) {
-    return <Outlet />;
-  } else if (isAuth) {
-    <Navigate to="/" />;
-  } else {
-    <Navigate to="/login" />;
-  }
+  return isAuth && isAdmin ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default ProtectedRoutes;
