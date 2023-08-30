@@ -2,15 +2,17 @@ import bedIcon from "../../assets/roomDefaultimage.svg";
 import chenckIcon from "../../assets/iconcheck.svg";
 import { hotelInformationProps } from "../../types/types";
 import { useAppSelector } from "../../hooks/reduxHooks";
+import { useContext } from "react";
+import { HandleOpenContext } from "../../utils/context";
 
 const HotelRoomInformation = ({ rooms }: hotelInformationProps) => {
   const reservations = useAppSelector(
     (state) => state.reservationReducer.reservations
   );
+  const context = useContext(HandleOpenContext);
 
-  const id = rooms ? rooms[0].hotelId : "";
   const totalReservations = reservations.filter(
-    (el) => el.room?.hotelId === id
+    (el) => el.room?.hotelId === context?.hotelDetailOpen.id
   );
 
   return (

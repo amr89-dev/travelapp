@@ -50,7 +50,10 @@ export const loginUser = (userData: UserLogin): AppThunk => {
       dispatch(setSuccess(true));
       dispatch(getAuth(true));
       dispatch(setLoggedUser(userLogged));
-      localStorage.setItem("userLogged", JSON.stringify(userLogged));
+      localStorage.setItem(
+        "userLogged",
+        JSON.stringify(userLogged.userDetails)
+      );
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const axiosError = error as AxiosError;
