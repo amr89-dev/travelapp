@@ -8,6 +8,11 @@ const HotelRoomInformation = ({ rooms }: hotelInformationProps) => {
     (state) => state.reservationReducer.reservations
   );
 
+  const id = rooms ? rooms[0].hotelId : "";
+  const totalReservations = reservations.filter(
+    (el) => el.room?.hotelId === id
+  );
+
   return (
     <section className="flex flex-col items-center ">
       <aside className=" w-full min-h-full grid grid-cols-2 gap-5">
@@ -31,12 +36,12 @@ const HotelRoomInformation = ({ rooms }: hotelInformationProps) => {
           </figure>
           <div className="flex flex-col items-center">
             <h3 className="font-bold text-center mb-1">
-              Habitaciones reservadas
+              Reservas en este hotel
             </h3>
             <h5 className=" text-gray-600 text-sm text-center">Total</h5>
           </div>
           <p className=" font-bold text-4xl text-center">
-            {reservations?.length ?? "name"}
+            {totalReservations?.length ?? "name"}
           </p>
         </div>
       </aside>

@@ -95,7 +95,9 @@ export const updateRerservation = (reservationData: Reservation): AppThunk => {
   };
 };
 
-export const deleteReservation = (idReservation: string): AppThunk => {
+export const deleteReservation = (
+  idReservation: string | undefined
+): AppThunk => {
   return async (dispatch) => {
     try {
       dispatch(delReservation(idReservation));

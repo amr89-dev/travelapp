@@ -46,6 +46,8 @@ export enum SortBy {
   INCOME = "netIncome",
   TAXES = "roomTaxes",
   AVAILABLE = "available",
+  DATE = "CheckInDate",
+  USER = "email",
 }
 
 /*----- REDUX ------*/

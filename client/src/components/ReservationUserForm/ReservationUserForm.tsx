@@ -1,21 +1,29 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
-import { createReservation } from "../../redux/slices/reservations.slice";
-import { useParams } from "react-router-dom";
+import {
+  createReservation,
+  setError,
+  setSuccess,
+} from "../../redux/slices/reservations.slice";
+import { useNavigate, useParams } from "react-router-dom";
 import { Guest, Reservation, UserGender } from "../../types/types";
 import GuestForm from "../GuestForm/GuestForm";
+import Swal from "sweetalert2";
 
 const ReservationUserForm = () => {
+  const navigate = useNavigate();
   const [guests, setGuests] = useState<Guest[]>([]);
-
   const dispatch = useAppDispatch();
   const idRoom = useParams().id;
   const roomData = useAppSelector((state) => state.roomReducer.rooms).filter(
     (room) => room.idRoom === idRoom
   );
+  const reservationsState = useAppSelector((state) => state.reservationReducer);
+
+  const { error, success } = reservationsState;
 
   const { roomCapacity } = roomData[0];
-  console.log(roomCapacity);
+  const numOfGuest = Array.from(" ".repeat(roomCapacity));
 
   const [guestData, setGuestData] = useState<Guest>({
     email: "",
@@ -39,6 +47,16 @@ const ReservationUserForm = () => {
 
   const addGuest = () => {
     setGuests([...guests, guestData]);
+    setGuestData({
+      email: "",
+      name: "",
+      lastName: "",
+      birthdate: "",
+      gender: UserGender.NEUTER,
+      documentType: "",
+      documentNumber: "",
+      phone: "",
+    });
   };
 
   const initialState = {
@@ -48,6 +66,7 @@ const ReservationUserForm = () => {
     idRoom: "",
     emergencyContactName: "",
     emergencyContactPhone: "",
+    guests: [],
   };
   const storage = localStorage.getItem("userLogged") || "";
   const { userDetails } = JSON.parse(storage);
@@ -64,11 +83,13 @@ const ReservationUserForm = () => {
       [name]: value,
       idRoom: idRoom || "",
       userId: userDetails.id || "",
+      guests: guests,
     });
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    Swal.showLoading();
     dispatch(createReservation(formData));
     setFormData(initialState);
   };
@@ -79,16 +100,60 @@ const ReservationUserForm = () => {
     button:
       "bg-blue-700 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline",
   };
+
+  if (error?.message) {
+    Swal.fire({
+      title: "Error!",
+      text: `${error?.message}`,
+      icon: "error",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#1d4ed8",
+    }).then(() => {
+      dispatch(setError(null));
+    });
+  } else if (success) {
+    Swal.fire({
+      title: "Exito!",
+      text: `La reserva ha sido creada correctamente, por favor revise su correo electronico`,
+      icon: "success",
+      confirmButtonText: "Ok",
+      confirmButtonColor: "#1d4ed8",
+    }).then(() => {
+      dispatch(setSuccess(null));
+    });
+  }
   return (
-    <div className=" bg-red-500  p-8 rounded-lg border flex flex-col justify-center items-center">
-      <h2 className="font-bold text-xl">Hacer una reserva</h2>
-      <form onSubmit={handleSubmit} className="w-[60%] bg-blue-500 ">
+    <div className="p-8 pt-4 rounded-lg border flex flex-col justify-center items-center">
+      <div className="flex flex-col items-center justify-between w-[55%] ">
+        <button
+          className="self-start  bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          onClick={() => {
+            navigate(-1);
+          }}
+        >
+          Regresar
+        </button>
+        <h2 className="font-bold text-xl  self-center text-center">
+          Hacer una reserva
+        </h2>
+      </div>
+      <form onSubmit={handleSubmit} className="w-[60%] flex flex-col">
         <input type="hidden" name="idRoom" value={formData.idRoom} />
-        <GuestForm
-          guestData={guestData}
-          handleGuestChange={handleGuestChange}
-          addGuest={addGuest}
-        />
+        {numOfGuest.map((_, i, arr) => {
+          return (
+            <GuestForm
+              index={i}
+              array={arr}
+              key={i}
+              guestData={guestData}
+              handleGuestChange={handleGuestChange}
+              addGuest={addGuest}
+            />
+          );
+        })}
+        <h3 className="font-bold text-gray-700 self-start text-l  my-4 px-8">
+          Datos de la reserva
+        </h3>
         <div className="w-full flex flex-row items-center justify-center gap-3 mb-2 px-8">
           <div className="w-full">
             <label className={formStyles.label} htmlFor="checkInDate">
@@ -125,7 +190,7 @@ const ReservationUserForm = () => {
             />
           </div>
         </div>
-        <div className="w-full flex flex-row items-center justify-center gap-3 mb-2 px-8">
+        <div className="w-full flex flex-row items-center justify-center gap-3 mb-4 px-8">
           <div className="w-full">
             <label className={formStyles.label} htmlFor="emergencyContactName">
               Nombre contacto de emergencia:
@@ -155,7 +220,9 @@ const ReservationUserForm = () => {
             />
           </div>
         </div>
-        <button className={formStyles.button}>Reservar</button>
+        <button type="submit" className={`${formStyles.button}  mx-8`}>
+          Reservar
+        </button>
       </form>
     </div>
   );

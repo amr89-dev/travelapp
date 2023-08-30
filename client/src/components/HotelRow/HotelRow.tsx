@@ -71,6 +71,8 @@ const HotelRow = ({ hotelData, index }: HotelCardProps) => {
           <button
             className="border border-black group-hover:border-white rounded-lg p-1"
             onClick={() => {
+              console.log(idHotel);
+
               context?.handleHotelDetailOpen(idHotel);
             }}
           >

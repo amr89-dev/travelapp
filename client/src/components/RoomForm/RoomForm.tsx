@@ -26,6 +26,7 @@ const RoomForm = () => {
     roomLocation: "",
     available: true,
     roomTaxes: "",
+    roomCapacity: 0,
   };
 
   const [formData, setFormData] = useState<Room>(initialState);
@@ -40,6 +41,7 @@ const RoomForm = () => {
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    Swal.showLoading();
     dispatch(createRoom(formData));
     setFormData(initialState);
   };
@@ -89,7 +91,7 @@ const RoomForm = () => {
 
         <div className=" shadow-2xl rounded-lg  sm:w-1/2 flex flex-col p-4 gap-3 mb-3">
           <div className="flex flex-row items-center gap-4">
-            <div>
+            <div className="w-full">
               <label htmlFor="numRooms" className={formStyles.label}>
                 Cantidad de habitaciones a crear:
               </label>
@@ -103,7 +105,7 @@ const RoomForm = () => {
                 min="0"
               />
             </div>
-            <div>
+            <div className="w-full">
               <label htmlFor="roomType" className={formStyles.label}>
                 Tipo de habitación:
               </label>

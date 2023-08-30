@@ -104,32 +104,35 @@ const SignUp = () => {
           Hazte una cuenta
         </h2>
         <div className=" shadow-2xl rounded-lg   sm:w-1/2 flex flex-col p-4 gap-3">
-          <div>
-            <label htmlFor="name" className={formStyles.label}>
-              Nombre:
-            </label>
-            <input
-              type="text"
-              name="name"
-              className={formStyles.input}
-              id="name"
-              onChange={handleChange}
-              value={formData.name}
-              placeholder="Ingrese su nombre"
-            />
-
-            <label htmlFor="last-name" className={formStyles.label}>
-              Apellido:
-            </label>
-            <input
-              type="text"
-              name="lastName"
-              className={formStyles.input}
-              id="last-name"
-              onChange={handleChange}
-              value={formData.lastName}
-              placeholder="Ingrese su apellido"
-            />
+          <div className="w-full flex flex-row justify-center items-center gap-3">
+            <div className="w-full">
+              <label htmlFor="name" className={formStyles.label}>
+                Nombre:
+              </label>
+              <input
+                type="text"
+                name="name"
+                className={formStyles.input}
+                id="name"
+                onChange={handleChange}
+                value={formData.name}
+                placeholder="Ingrese su nombre"
+              />
+            </div>
+            <div className="w-full">
+              <label htmlFor="last-name" className={formStyles.label}>
+                Apellido:
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                className={formStyles.input}
+                id="last-name"
+                onChange={handleChange}
+                value={formData.lastName}
+                placeholder="Ingrese su apellido"
+              />
+            </div>
           </div>
           <div>
             <label htmlFor="email" className={formStyles.label}>
@@ -173,60 +176,69 @@ const SignUp = () => {
               placeholder="Ingrese su numero de telefono"
             />
           </div>
-          <div>
-            <label htmlFor="birthdate" className={formStyles.label}>
-              Fecha de nacimiento:
-            </label>
-            <input
-              type="date"
-              name="birthdate"
-              id="birthdate"
-              onChange={handleChange}
-              value={formData.birthdate}
-              placeholder="Ingrese su fecha de nacimiento"
-            />
+
+          <div className="w-full flex flex-row justify-center items-center gap-3">
+            <div className="w-full">
+              <label htmlFor="birthdate" className={formStyles.label}>
+                Fecha de nacimiento:
+              </label>
+              <input
+                type="date"
+                name="birthdate"
+                id="birthdate"
+                onChange={handleChange}
+                value={formData.birthdate}
+                className={formStyles.input}
+              />
+            </div>
+            <div className="w-full">
+              <label htmlFor="gender" className={formStyles.label}>
+                Sexo:
+              </label>
+              <div className="flex flex-row gap-2">
+                <label>
+                  <input
+                    className="mr-1"
+                    type="radio"
+                    name="gender"
+                    value={UserGender.FEMININE}
+                    onChange={handleChange}
+                    placeholder="Ingrese su fecha de nacimiento"
+                  />
+                  Femenino
+                </label>
+                <label>
+                  <input
+                    className="mr-1"
+                    type="radio"
+                    name="gender"
+                    value={UserGender.MASCULINE}
+                    onChange={handleChange}
+                    placeholder="Ingrese su fecha de nacimiento"
+                  />
+                  Masculino
+                </label>
+                <label>
+                  <input
+                    className="mr-1"
+                    type="radio"
+                    name="gender"
+                    value={UserGender.NEUTER}
+                    onChange={handleChange}
+                    placeholder="Ingrese su fecha de nacimiento"
+                  />
+                  Neutro
+                </label>
+              </div>
+            </div>
           </div>
-          <div>
-            <label htmlFor="gender" className={formStyles.label}>
-              Sexo:
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="gender"
-                value={UserGender.FEMININE}
-                onChange={handleChange}
-                placeholder="Ingrese su fecha de nacimiento"
-              />
-              Femenino
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="gender"
-                value={UserGender.MASCULINE}
-                onChange={handleChange}
-                placeholder="Ingrese su fecha de nacimiento"
-              />
-              Masculino
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="gender"
-                value={UserGender.NEUTER}
-                onChange={handleChange}
-                placeholder="Ingrese su fecha de nacimiento"
-              />
-              Neutro
-            </label>
-          </div>
-          <div>
+          <div className="w-full flex flex-row justify-center items-center gap-3">
             <select
               name="documentType"
               id="documentType"
               onChange={handleChange}
               value={formData.documentType}
+              className={formStyles.input}
             >
               <option value="" disabled>
                 Tipo de documento
@@ -244,6 +256,7 @@ const SignUp = () => {
               onChange={handleChange}
               value={formData.documentNumber}
               placeholder="Ingrese su numero de documento"
+              className={formStyles.input}
             />
           </div>
           <button className={formStyles.button} type="submit">

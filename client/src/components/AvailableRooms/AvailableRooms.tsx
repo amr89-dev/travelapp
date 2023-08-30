@@ -5,13 +5,25 @@ const AvailableRooms = () => {
   const navigate = useNavigate();
   const rooms = useAppSelector((state) => state.roomReducer.rooms);
   const id = useParams().id;
-  const roomsToRender = rooms.filter((room) => room.hotelId === id);
+  const roomsToRender = rooms.filter(
+    (room) => room.hotelId === id && room.available
+  );
   const hotelName = useAppSelector((state) => state.hotelReducer.hotels).filter(
     (hotel) => hotel.idHotel === id
   )[0].name;
 
   return (
     <div className="flex flex-col items-center">
+      <div className="w-[60% mt-2">
+        <button
+          className="self-start bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Regresar
+        </button>
+      </div>
       <h2 className="font-bold text-2xl m-4">
         Habitaciones disponibles en el hotel <i>{hotelName}</i>
       </h2>

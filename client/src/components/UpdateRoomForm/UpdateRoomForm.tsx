@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { Room, updateRoomFormProps } from "../../types/types";
+import { updateRoomFormProps } from "../../types/types";
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import {
   setErrorRoom,
@@ -15,12 +15,13 @@ const UpdateRoomForm = ({ room }: updateRoomFormProps) => {
   const roomsState = useAppSelector((state) => state.roomReducer);
   const { error, success } = roomsState;
 
-  const [formData, setFormData] = useState<Room>({
+  const [formData, setFormData] = useState({
     idRoom: room?.idRoom,
     roomPrice: room?.roomPrice,
     roomType: room?.roomType,
     available: room?.available,
     roomTaxes: room?.roomTaxes,
+    roomCapacity: room?.roomCapacity || 1,
   });
 
   const formStyles = {
@@ -34,10 +35,13 @@ const UpdateRoomForm = ({ room }: updateRoomFormProps) => {
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
+    const { name, value } = e.target;
+    console.log(name, value);
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
-      available: e.target.value === "true" ? true : false,
+      [name]: value,
+      available: name === "available" && value === "true" ? true : false,
     });
   };
 
@@ -162,7 +166,7 @@ const UpdateRoomForm = ({ room }: updateRoomFormProps) => {
               context?.handleRoomUpdateOpen(undefined);
             }}
           >
-            cerrar
+            Cerrar
           </button>
         </div>
       </form>

@@ -38,6 +38,7 @@ const ReservationForm = () => {
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    Swal.showLoading();
     dispatch(createReservation(formData));
     setFormData(initialState);
   };

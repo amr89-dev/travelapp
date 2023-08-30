@@ -123,7 +123,7 @@ const SearchBar = () => {
       <input
         className=" col-span-3 shadow appearance-none border rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
         type="number"
-        name="qty"
+        name="numberOfGuests"
         id="passagers"
         placeholder="Cantidad de huespedes"
         value={inputSearch.numberOfGuests}

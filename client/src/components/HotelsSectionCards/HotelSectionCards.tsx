@@ -8,6 +8,7 @@ const HotelSectionCards = () => {
   const hotels = useAppSelector((state) => state.hotelReducer.hotels);
   const context = useContext(HandleOpenContext);
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE);
+  const [sortingDirection, setsortingDirection] = useState(false);
   const [filterCity, setFilterCity] = useState<string | null>(null);
   const [filterFavorite, setFilterFavorite] = useState(false);
 
@@ -18,6 +19,7 @@ const HotelSectionCards = () => {
   };
   const handleChangeSort = (sort: SortBy) => {
     setSorting(sort);
+    setsortingDirection(!sortingDirection);
   };
   const handleFavorite = () => {
     setFilterFavorite(!filterFavorite);
@@ -54,11 +56,14 @@ const HotelSectionCards = () => {
       const extractProperty = compareProperties[sorting];
       const propertyA = extractProperty(a);
       const propertyB = extractProperty(b);
-      console.log(propertyA);
 
-      return propertyA && propertyB ? propertyA.localeCompare(propertyB) : 0;
+      return propertyA && propertyB
+        ? sortingDirection
+          ? propertyB.localeCompare(propertyA)
+          : propertyA.localeCompare(propertyB)
+        : 0;
     });
-  }, [filteredHotels, sorting]);
+  }, [filteredHotels, sorting, sortingDirection]);
 
   return (
     <>

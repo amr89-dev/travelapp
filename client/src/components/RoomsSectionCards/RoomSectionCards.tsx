@@ -7,10 +7,12 @@ const RoomSectionCards = () => {
   const hotels = useAppSelector((state) => state.hotelReducer.hotels);
   const rooms: Room[] = useAppSelector((state) => state.roomReducer.rooms);
   const [sorting, setSorting] = useState<SortBy>(SortBy.NONE);
+  const [sortingDirection, setsortingDirection] = useState(false);
   const [filterHotel, setFilterHotel] = useState<string | null>(null);
 
   const handleChangeSort = (sort: SortBy) => {
     setSorting(sort);
+    setsortingDirection(!sortingDirection);
   };
   const filteredRooms = useMemo(() => {
     return filterHotel != null && filterHotel.length > 0
@@ -50,9 +52,13 @@ const RoomSectionCards = () => {
           ? extractProperty(b)?.toString()
           : extractProperty(b);
 
-      return propertyA && propertyB ? propertyB.localeCompare(propertyA) : 0;
+      return propertyA && propertyB
+        ? sortingDirection
+          ? propertyB.localeCompare(propertyA)
+          : propertyA.localeCompare(propertyB)
+        : 0;
     });
-  }, [filteredRooms, sorting]);
+  }, [filteredRooms, sorting, sortingDirection]);
 
   return (
     <>
