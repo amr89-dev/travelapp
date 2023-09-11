@@ -4,7 +4,7 @@ const { database } = require("./src/DB.js");
 const loadHotels = require("./src/helper/hotelDB.js");
 const loadUsers = require("./src/helper/userDB.js");
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || "3001";
 
 const main = async () => {
   try {
